@@ -23,12 +23,10 @@
 
 <template id="loginPage">
   <v-ons-page>
-    <div style="text-align: center; margin-top: 30px;">
+    <div class="login-form">
       <p><v-ons-input id="username" modifier="underbar" placeholder="Username" float></v-ons-input></p>
       <p><v-ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></v-ons-input></p>
-      <p style="margin-top: 30px;">
-        <v-ons-button @click="login">login</v-ons-button>
-      </p>
+      <v-ons-button @click="login">login</v-ons-button>
     </div>
   </v-ons-page>
 </template>
@@ -56,29 +54,15 @@
   </div>
 </div>
 
+
 <ul class="list list--material">
-  <li class="list-item list-item--material">
+  <li class="list-item list-item--material" v-for="item in items">
     <div class="list-item__left list-item--material__left">
       <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
     </div>
 
     <div class="list-item__center list-item--material__center">
-      <div class="list-item__title list-item--material__title">Alice</div>
-      <div class="list-item__subtitle list-item--material__subtitle">Description</div>
-    </div>
-
-    <div class="list-item__right list-item--material__right">
-      <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
-    </div>
-  </li>
-
-  <li class="list-item list-item--material">
-    <div class="list-item__left list-item--material__left">
-      <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
-    </div>
-
-    <div class="list-item__center list-item--material__center">
-      <div class="list-item__title list-item--material__title">Bob</div>
+      <div class="list-item__title list-item--material__title">{{ item.message }}</div>
       <div class="list-item__subtitle list-item--material__subtitle">Description</div>
     </div>
 
@@ -126,7 +110,17 @@
 
 const accessRequest = {
   key: 'accessRequest',
-  template: '#accessRequest'
+  template: '#accessRequest',
+  data () {
+    return {
+      items: [
+        { message: 'Foo' },
+        { message: 'Bar' },
+        { message: 'Hoge' },
+        { message: 'Huga' }
+      ]
+    }
+  }
 };
 
 const loginPage = {
@@ -139,8 +133,8 @@ const loginPage = {
   }
 };
 
-//Vue.use(VueOnsen);
-new Vue({
+Vue.use(VueOnsen);
+var vm = new Vue({
   el: '#app',
   template: '#main',
   data() {
