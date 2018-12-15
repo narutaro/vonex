@@ -7,9 +7,21 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-onsenui"></script>
   <link rel="stylesheet" href="app.css">
+  <script src="url.js"></script>
+  <script>
+function createURLSearchParams(data) {
+  const params = new URLSearchParams();
+  Object.keys(data).forEach(key => params.append(key, data[key]));
+  return params;
+}
+  </script>
+
+
+
 </head>
 <body>
 
+<!-- MAIN -->
 <template id="main">
   <v-ons-navigator swipeable
     :options="{
@@ -21,19 +33,20 @@
   ></v-ons-navigator>
 </template>
 
+<!-- LOGIN -->
 <template id="loginPage">
   <v-ons-page>
     <div class="login-form">
-      <p><v-ons-input id="username" modifier="underbar" placeholder="Username" float></v-ons-input></p>
-      <p><v-ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></v-ons-input></p>
+      <p><v-ons-input v-model="form.name" id="username" modifier="underbar" placeholder="Username" float></v-ons-input></p>
+      <p><v-ons-input v-model="form.password" id="password" modifier="underbar" type="password" placeholder="Password" float></v-ons-input></p>
       <v-ons-button @click="login">login</v-ons-button>
     </div>
   </v-ons-page>
 </template>
 
+<!-- AR -->
 <template id="accessRequest">
-
-<v-ons-page>
+  <v-ons-page>
 
 <div class="toolbar toolbar--material">
   <div class="toolbar__left toolbar--material__left">
@@ -100,11 +113,14 @@
 
 </div>
 
-</v-ons-page>
-
+  </v-ons-page>
 </template>
 
+
+<!-- APP -->
 <div id="app"></div>
+
+
 
 <script>
 
@@ -126,8 +142,34 @@ const accessRequest = {
 const loginPage = {
   key: 'loginPage',
   template: '#loginPage',
+  login_url: login_url = base_url + "glass/login-handler",
+  data() {
+    return {
+      form: {
+        name: '',
+        password: ''
+      }
+    }
+  },
   methods: {
     login() {
+      console.log(this.form);
+      var form_data = { "username": this.form.name, "password": this.form.password, "destination": "" };
+      //var params = createURLSearchParams(form_data);
+      var login_options = { mode: 'cors', method: 'post', credentials: 'include', body: createURLSearchParams(form_data) };
+      console.log(login_options);
+      console.log(login_url);
+
+      // API call
+      fetch(login_url, login_options).then(function(response) {
+        //console.log(response); 
+        console.log('date:' + response.headers.get('Date')); 
+        console.log('server:' + response.headers.get('Server')); 
+        console.log('cookie-header:' + response.headers.get('Set-Cookie')); 
+        //console.log('cookie-header-list:' + response.headers.getlist('Set-Cookie')); 
+        //console.log('document.cookie:' + document.cookie); 
+      });
+
       this.$emit('push-page', accessRequest);
     }
   }
@@ -143,6 +185,7 @@ var vm = new Vue({
     };
   }
 });
+
 </script>
 
 </body>
