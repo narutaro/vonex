@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
@@ -9,16 +10,14 @@
   <link rel="stylesheet" href="app.css">
   <script src="url.js"></script>
   <script>
-function createURLSearchParams(data) {
-  const params = new URLSearchParams();
-  Object.keys(data).forEach(key => params.append(key, data[key]));
-  return params;
-}
+    function createURLSearchParams(data) {
+      const params = new URLSearchParams();
+      Object.keys(data).forEach(key => params.append(key, data[key]));
+      return params;
+    }
   </script>
-
-
-
 </head>
+
 <body>
 
 <!-- MAIN -->
@@ -59,7 +58,7 @@ function createURLSearchParams(data) {
   </div>
   <div class="toolbar__right toolbar--material__right">
     <span class="toolbar-button toolbar-button--material">
-      <i class="zmdi zmdi-favorite"></i>
+      <i class="zmdi zmdi-favorite" @click="logout"></i>
     </span>
     <span class="toolbar-button toolbar-button--material">
       <i class="zmdi zmdi-more-vert"></i>
@@ -135,6 +134,14 @@ const accessRequest = {
         { message: 'Hoge' },
         { message: 'Huga' }
       ]
+    }
+  },
+  methods: {
+    logout() {
+      console.log('logout clicked');
+      fetch(base_url + 'glass/glass-logout').then(function(response) {
+        console.log(response);
+      });
     }
   }
 };
