@@ -46,6 +46,78 @@
   </v-ons-page>
 </template>
 
+<!-- MYDC -->
+<template id="myDCs">
+  <v-ons-page>
+
+<div class="toolbar toolbar--material">
+  <div class="toolbar__left toolbar--material__left">
+    <span class="toolbar-button toolbar-button--material">
+      <i class="zmdi zmdi-menu"></i>
+    </span>
+  </div>
+  <div class="toolbar__center toolbar--material__center">
+    <input type="search" value="" placeholder="Search" class="search-input">
+  </div>
+  <div class="toolbar__right toolbar--material__right">
+    <span class="toolbar-button toolbar-button--material">
+      <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false"></ons-icon>
+    </span>
+    <span class="toolbar-button toolbar-button--material">
+      <i class="zmdi zmdi-more-vert"></i>
+    </span>
+  </div>
+</div>
+
+
+<ul class="list list--material">
+  <li class="list-item list-item--material" v-for="dc in datacenters">
+    <div class="list-item__left list-item--material__left">
+      <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
+    </div>
+
+    <div class="list-item__center list-item--material__center">
+      <div class="list-item__title list-item--material__title">{{ dc.name }}</div>
+      <div class="list-item__subtitle list-item--material__subtitle">{{ dc.address }}</div>
+    </div>
+
+    <div class="list-item__right list-item--material__right">
+      <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
+    </div>
+  </li>
+</ul>
+
+  <ons-fab position="bottom right">
+    <ons-icon icon="md-plus"></ons-icon>
+  </ons-fab>
+
+<div class="tabbar">
+  <label class="tabbar__item">
+    <input type="radio" name="tabbar-b" checked="checked">
+    <button class="tabbar__button">
+      <i class="tabbar__icon ion-stop"></i>
+    </button>
+  </label>
+
+  <label class="tabbar__item">
+    <input type="radio" name="tabbar-b">
+    <button class="tabbar__button">
+      <i class="tabbar__icon ion-record"></i>
+    </button>
+  </label>
+
+  <label class="tabbar__item">
+    <input type="radio" name="tabbar-b">
+    <button class="tabbar__button">
+      <i class="tabbar__icon ion-star"></i>
+    </button>
+  </label>
+
+</div>
+
+  </v-ons-page>
+</template>
+
 <!-- AR -->
 <template id="accessRequest">
   <v-ons-page>
@@ -126,6 +198,35 @@
 
 <script>
 
+const myDCs = {
+  key: 'myDCs',
+  template: '#myDCs',
+  data () {
+    return {
+      datacenters: [{id: 111}]
+    }
+  },
+  created() {
+    this.getMyDCs()
+  },
+  methods: {
+    logout() {
+      console.log('logout clicked');
+      fetch(base_url + "glass/glass-logout").then(function(response) {
+        console.log(response);
+      });
+    },
+    getMyDCs() {
+      fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true")
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          this.datacenters = json;
+        }); 
+    }
+  }
+};
+
 const accessRequest = {
   key: 'accessRequest',
   template: '#accessRequest',
@@ -192,7 +293,7 @@ const loginPage = {
         //console.log(json);
         if (json.ok == 1){
           console.log('login succeeded')
-          this.$emit('push-page', accessRequest);
+          this.$emit('push-page', myDCs);
         }else{
           console.log('login failed')
         }
