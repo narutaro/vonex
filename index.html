@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-onsenui"></script>
   <link rel="stylesheet" href="app.css">
-  <script src="url.js"></script>
+  <script src="params.js"></script>
   <script>
     function createURLSearchParams(data) {
       const params = new URLSearchParams();
@@ -16,7 +16,7 @@
       return params;
     }
 
-   function sAuth() {
+   function isAuth() {
    }
   </script>
 </head>
@@ -61,7 +61,7 @@
   </div>
   <div class="toolbar__right toolbar--material__right">
     <span class="toolbar-button toolbar-button--material">
-      <i class="zmdi zmdi-favorite" @click="logout"></i>
+      <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false"></ons-icon>
     </span>
     <span class="toolbar-button toolbar-button--material">
       <i class="zmdi zmdi-more-vert"></i>
@@ -139,11 +139,25 @@ const accessRequest = {
       ]
     }
   },
+  created() {
+    this.getAccessRequests()
+    //this.getMyDCs()
+  },
   methods: {
     logout() {
       console.log('logout clicked');
-      fetch(base_url + 'glass/glass-logout').then(function(response) {
+      fetch(base_url + "glass/glass-logout").then(function(response) {
         console.log(response);
+      });
+    },
+    getAccessRequests() {
+      fetch(base_url + "nexcenter-jp/v2/" + dcid + "/access_requests").then(function(response) {
+        console.log(response.json());
+      });
+    },
+    getMyDCs() {
+      fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true").then(function(response) {
+        console.log(response.json());
       });
     }
   }
@@ -177,10 +191,10 @@ const loginPage = {
         const json = await response.json();
         //console.log(json);
         if (json.ok == 1){
-          //console.log('login succeeded')
+          console.log('login succeeded')
           this.$emit('push-page', accessRequest);
         }else{
-          //console.log('login failed')
+          console.log('login failed')
         }
       } catch (error) {
         console.log(error);
