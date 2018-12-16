@@ -15,6 +15,9 @@
       Object.keys(data).forEach(key => params.append(key, data[key]));
       return params;
     }
+
+   function sAuth() {
+   }
   </script>
 </head>
 
@@ -162,22 +165,29 @@ const loginPage = {
     login() {
       console.log(this.form);
       var form_data = { "username": this.form.name, "password": this.form.password, "destination": "" };
-      //var params = createURLSearchParams(form_data);
       var login_options = { mode: 'cors', method: 'post', credentials: 'include', body: createURLSearchParams(form_data) };
-      console.log(login_options);
-      console.log(login_url);
+      //console.log(login_options);
+      //console.log(login_url);
 
-      // API call
-      fetch(login_url, login_options).then(function(response) {
-        //console.log(response); 
-        console.log('date:' + response.headers.get('Date')); 
-        console.log('server:' + response.headers.get('Server')); 
-        console.log('cookie-header:' + response.headers.get('Set-Cookie')); 
-        //console.log('cookie-header-list:' + response.headers.getlist('Set-Cookie')); 
-        //console.log('document.cookie:' + document.cookie); 
-      });
+    // login API call in synced manner
+    (async () => {
+      try {
+        const response = await fetch(login_url, login_options);
+        //response.headers.forEach((value, key) => console.log(key, ": ", value))
+        const json = await response.json();
+        //console.log(json);
+        if (json.ok == 1){
+          //console.log('login succeeded')
+          this.$emit('push-page', accessRequest);
+        }else{
+          //console.log('login failed')
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
 
-      this.$emit('push-page', accessRequest);
+
     }
   }
 };
