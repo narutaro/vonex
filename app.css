@@ -1,15 +1,19 @@
 .login-form {
   text-align: center;
-  margin-top: 200px;
+  margin-top: 200px
 }
 
 .search-input {
   vertical-align: middle;
-  width: 140px;
+  width: 100% 
+}
+
+.toolbar--material__center {
+  margin-left: 10px
 }
 
 ons-fab.fab--bottom__right {
-  bottom: 65px;
+  bottom: 65px
 }
 
 
