@@ -214,7 +214,7 @@ const myDCs = {
   data () {
     return {
       datacenters: [{id: 0}],
-      selectedDcId: "default"
+      selectedDcId: 2
     }
   },
   created() {
@@ -228,10 +228,12 @@ const myDCs = {
       });
     },
     selectedDC(dcid) {
-      this.selectedDcId = dcid;
-      console.log("you select dc " + this.selectedDcId);
+      //this.selectedDcId = dcid;
+      //console.log("you select dc " + this.selectedDcId);
+      console.log("you select dc " + dcid);
       this.$emit('push-page', {
         extends: accessRequest,
+        data() { selectedDcId: 1 },
         onsNavigatorOptions: {
           animation: 'slide',
           animationOptions: { duration: 0.5 }
@@ -267,11 +269,18 @@ const accessRequest = {
         { message: 'Bar' },
         { message: 'Hoge' },
         { message: 'Huga' }
-      ]
+      ],
+      props: {
+        selectedDcId: {
+        type: Number,
+        required: true
+        }
+      }
     }
   },
   created() {
-    this.getAccessRequests()
+    this.getAccessRequests();
+    console.log(this.selectedDcId);
   },
   methods: {
     logout() {
