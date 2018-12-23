@@ -213,8 +213,7 @@ const myDCs = {
   template: '#myDCs',
   data () {
     return {
-      datacenters: [{id: 0}],
-      selectedDcId: 2
+      datacenters: [{ id: "Something went wrong if you see this default value" }]
     }
   },
   created() {
@@ -228,12 +227,14 @@ const myDCs = {
       });
     },
     selectedDC(dcid) {
-      //this.selectedDcId = dcid;
-      //console.log("you select dc " + this.selectedDcId);
       console.log("you select dc " + dcid);
       this.$emit('push-page', {
         extends: accessRequest,
-        data() { selectedDcId: 1 },
+        data() {
+          return {
+            selectedDcId: dcid
+          };
+        },
         onsNavigatorOptions: {
           animation: 'slide',
           animationOptions: { duration: 0.5 }
@@ -270,17 +271,11 @@ const accessRequest = {
         { message: 'Hoge' },
         { message: 'Huga' }
       ],
-      props: {
-        selectedDcId: {
-        type: Number,
-        required: true
-        }
-      }
     }
   },
   created() {
     this.getAccessRequests();
-    console.log(this.selectedDcId);
+    console.log("i received dcid as " + this.selectedDcId);
   },
   methods: {
     logout() {
@@ -290,7 +285,7 @@ const accessRequest = {
       });
     },
     getAccessRequests() {
-      fetch(base_url + "nexcenter-jp/v2/" + dcid + "/access_requests")
+      fetch(base_url + "nexcenter-jp/v2/" + this.selectedDcId + "/access_requests")
         .then(response => response.json())
         .then(json => {
           console.log(json);
