@@ -16,4 +16,23 @@ ons-fab.fab--bottom__right {
   bottom: 65px
 }
 
+.status-pending, .status-canceled {
+  padding: 3px 6px;
+  margin-right: 8px;
+  margin-left: 1px;
+  font-size: 75%;
+  color: white;
+  border-radius: 6px;
+  box-shadow: 0 0 3px #ddd;
+  white-space: nowrap;
+}
+
+.status-pending {
+  background-color: #58ACFA; /*青*/
+}
+
+.status-canceled {
+  background-color: #04B404; /*緑*/
+}
+
 
