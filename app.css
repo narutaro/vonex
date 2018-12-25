@@ -5,16 +5,25 @@
 
 .search-input {
   vertical-align: middle;
-  width: 100% 
+  width: 90px;
+  margin-right: 16px
 }
 
+/*
 .toolbar--material__center {
   margin-left: 10px
 }
+*/
 
+.toolbar__center.toolbar--material__center.app-css-title-center {
+  text-align: center;
+}
+
+/*
 ons-fab.fab--bottom__right {
   bottom: 65px
 }
+*/
 
 .status-pending, .status-canceled {
   padding: 3px 6px;

@@ -52,28 +52,19 @@
 
   <div class="toolbar toolbar--material">
     <div class="toolbar__left toolbar--material__left">
-      <span class="toolbar-button toolbar-button--material">
-        <i class="zmdi zmdi-menu"></i>
-      </span>
     </div>
-    <div class="toolbar__center toolbar--material__center app-css-search-center">
-      <input type="search" value="" placeholder="Search" class="search-input">
+
+    <div class="toolbar__center toolbar--material__center app-css-title-center">
+      <span>Datacenters</span>
     </div>
+
     <div class="toolbar__right toolbar--material__right">
-      <!-- LOGOUT -->
-      <span class="toolbar-button toolbar-button--material">
-        <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false"></ons-icon>
-      </span>
-      <!-- PROFILE -->
-      <span class="toolbar-button toolbar-button--material">
-        <ons-icon @click="myProfile" icon="fa-user-circle" fixed-width="false"></ons-icon>
-      </span>
     </div>
   </div>
 
 
   <ul class="list list--material">
-    <li class="list-item list-item--material" v-for="(dc, idx)  in datacenters" :key="dc.id">
+    <li class="list-item list-item--material" v-for="dc in datacenters">
 
       <div class="list-item__left list-item--material__left">
         <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
@@ -81,35 +72,40 @@
 
       <div @click="selectedDC(dc.id)" class="list-item__center list-item--material__center list-item--chevron list-item--tappable">
         <div class="list-item__title list-item--material__title">{{ dc.name }}</div>
-        <div class="list-item__subtitle list-item--material__subtitle">{{ dc.id }}</div>
+        <div class="list-item__subtitle list-item--material__subtitle"><ons-icon icon="fa-map-marker-alt"></ons-icon> {{ dc.timezone }}</div>
       </div>
 
     </li>
   </ul>
 
-  <ons-fab position="bottom right">
-    <ons-icon icon="md-plus"></ons-icon>
-  </ons-fab>
-
 <div class="tabbar">
   <label class="tabbar__item">
     <input type="radio" name="tabbar-b" checked="checked">
     <button class="tabbar__button">
-      <i class="tabbar__icon ion-stop"></i>
+      <!-- <i class="tabbar__icon ion-stop"></i> -->
+      <ons-icon @click="myProfile" icon="fa-users" fixed-width="false" size="2x"></ons-icon>
     </button>
   </label>
 
   <label class="tabbar__item">
     <input type="radio" name="tabbar-b">
     <button class="tabbar__button">
-      <i class="tabbar__icon ion-record"></i>
+<!--      <i class="tabbar__icon ion-record"></i> -->
     </button>
   </label>
 
   <label class="tabbar__item">
     <input type="radio" name="tabbar-b">
     <button class="tabbar__button">
-      <i class="tabbar__icon ion-star"></i>
+<!--      <i class="tabbar__icon ion-record"></i> -->
+    </button>
+  </label>
+
+  <label class="tabbar__item">
+    <input type="radio" name="tabbar-b">
+    <button class="tabbar__button">
+      <!-- <i class="tabbar__icon ion-star"></i> -->
+      <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false" size="2x"></ons-icon>
     </button>
   </label>
 
@@ -127,31 +123,16 @@
       <v-ons-back-button>Back</v-ons-back-button>
     </div>
 
-<!--
-    <div class="toolbar__left toolbar--material__left">
-      <span class="toolbar-button toolbar-button--material">
-        <i class="zmdi zmdi-menu"></i>
-      </span>
+    <div class="toolbar__center toolbar--material__center app-css-title-center">
+      <span>Access Requests</span>
     </div>
--->
 
-    <!-- SEARCH -->
-    <div class="toolbar__center toolbar--material__center">
-      <input type="search" value="" placeholder="Search" class="search-input">
-    </div>
     <div class="toolbar__right toolbar--material__right">
-      <!-- LOGOUT -->
-      <span class="toolbar-button toolbar-button--material">
-        <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false"></ons-icon>
-      </span>
-      <!-- PROFILE -->
-      <span class="toolbar-button toolbar-button--material">
-        <ons-icon icon="fa-user-circle" fixed-width="false"></ons-icon>
-      </span>
+      <input type="search" value="" placeholder="Search" class="search-input">
     </div>
   </div>
 
-
+<!-- <div style="overflow: scroll"> -->
 <ul class="list list--material">
   <li class="list-item list-item--material" v-for="ar in access_requests">
     <div class="list-item__left list-item--material__left">
@@ -160,7 +141,7 @@
 
     <div class="list-item__center list-item--material__center">
       <div class="list-item__title list-item--material__title">{{ ar.id }}</div>
-      <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.state }}</span> {{ ar.start }}</div>
+      <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.stateInformation }}</span> {{ ar.start }}</div>
     </div>
 
     <div class="list-item__right list-item--material__right">
@@ -168,32 +149,11 @@
     </div>
   </li>
 </ul>
+<!-- <div> -->
 
   <ons-fab position="bottom right">
     <ons-icon icon="md-plus"></ons-icon>
   </ons-fab>
-
-<div class="tabbar">
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b" checked="checked">
-    <button class="tabbar__button">
-      <i class="tabbar__icon ion-stop"></i>
-    </button>
-  </label>
-
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b">
-    <button class="tabbar__button">
-      <i class="tabbar__icon ion-record"></i>
-    </button>
-  </label>
-
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b">
-    <button class="tabbar__button">
-      <i class="tabbar__icon ion-star"></i>
-    </button>
-  </label>
 
 </div>
 
@@ -290,6 +250,7 @@ const accessRequest = {
         .then(json => {
           console.log(json);
           this.access_requests = json;
+          console.log("this.access_requests: " + this.access_requests);
         }); 
     }
   }
