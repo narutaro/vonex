@@ -19,11 +19,12 @@
    function isAuth() {
    }
   </script>
+  <link rel="stylesheet" href="app.css">
 </head>
 
 <body>
 
-<!-- MAIN -->
+<!-- main -->
 <template id="main">
   <v-ons-navigator swipeable
     :options="{
@@ -35,7 +36,7 @@
   ></v-ons-navigator>
 </template>
 
-<!-- LOGIN -->
+<!-- login -->
 <template id="loginPage">
   <v-ons-page>
     <div class="login-form">
@@ -46,8 +47,8 @@
   </v-ons-page>
 </template>
 
-<!-- MYDC -->
-<template id="myDCs">
+<!-- mydcs -->
+<template id="Datacenters">
   <v-ons-page>
 
   <div class="toolbar toolbar--material">
@@ -78,43 +79,42 @@
     </li>
   </ul>
 
-<div class="tabbar">
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b" checked="checked">
-    <button class="tabbar__button">
-      <!-- <i class="tabbar__icon ion-stop"></i> -->
-      <ons-icon @click="myProfile" icon="fa-users" fixed-width="false" size="2x"></ons-icon>
-    </button>
-  </label>
+  <div class="tabbar">
+    <label class="tabbar__item">
+      <input type="radio" name="tabbar-b" checked="checked">
+      <button class="tabbar__button">
+        <!-- <i class="tabbar__icon ion-stop"></i> -->
+        <ons-icon @click="users" icon="fa-users" fixed-width="false" size="2x"></ons-icon>
+      </button>
+    </label>
 
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b">
-    <button class="tabbar__button">
-<!--      <i class="tabbar__icon ion-record"></i> -->
-    </button>
-  </label>
+    <label class="tabbar__item">
+      <input type="radio" name="tabbar-b">
+      <button class="tabbar__button">
+  <!--      <i class="tabbar__icon ion-record"></i> -->
+      </button>
+    </label>
 
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b">
-    <button class="tabbar__button">
-<!--      <i class="tabbar__icon ion-record"></i> -->
-    </button>
-  </label>
+    <label class="tabbar__item">
+      <input type="radio" name="tabbar-b">
+      <button class="tabbar__button">
+  <!--      <i class="tabbar__icon ion-record"></i> -->
+      </button>
+    </label>
 
-  <label class="tabbar__item">
-    <input type="radio" name="tabbar-b">
-    <button class="tabbar__button">
+    <label class="tabbar__item">
+      <input type="radio" name="tabbar-b">
+      <button class="tabbar__button">
       <!-- <i class="tabbar__icon ion-star"></i> -->
-      <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false" size="2x"></ons-icon>
-    </button>
-  </label>
-
-</div>
+        <ons-icon @click="logout" icon="fa-sign-out-alt" fixed-width="false" size="2x"></ons-icon>
+      </button>
+    </label>
+  </div>
 
   </v-ons-page>
 </template>
 
-<!-- AR -->
+<!-- ar -->
 <template id="accessRequest">
   <v-ons-page>
 
@@ -132,7 +132,6 @@
     </div>
   </div>
 
-<!-- <div style="overflow: scroll"> -->
 <ul class="list list--material">
   <li class="list-item list-item--material" v-for="ar in access_requests">
     <div class="list-item__left list-item--material__left">
@@ -149,7 +148,6 @@
     </div>
   </li>
 </ul>
-<!-- <div> -->
 
   <ons-fab position="bottom right">
     <ons-icon icon="md-plus"></ons-icon>
@@ -168,16 +166,16 @@
 
 <script>
 
-const myDCs = {
-  key: 'myDCs',
-  template: '#myDCs',
+const Datacenters = {
+  key: 'Datacenters',
+  template: '#Datacenters',
   data () {
     return {
       datacenters: [{ id: "Something went wrong if you see this default value" }]
     }
   },
   created() {
-    this.getMyDCs()
+    this.getDatacenters()
   },
   methods: {
     logout() {
@@ -201,7 +199,7 @@ const myDCs = {
         }
       });
     },
-    myProfile() { // glass/your-proile returns HTML while needig JSON
+    users() { // glass/your-proile returns HTML while needig JSON
       console.log('my profile clicked');
       fetch(base_url + "glass/your-profile")
         .then(response => response.text())
@@ -209,7 +207,7 @@ const myDCs = {
           console.log(text);
         }); 
     },
-    getMyDCs() {
+    getDatacenters() {
       fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true")
         .then(res => res.json())
         .then(json => {
@@ -250,7 +248,6 @@ const accessRequest = {
         .then(json => {
           console.log(json);
           this.access_requests = json;
-          console.log("this.access_requests: " + this.access_requests);
         }); 
     }
   }
@@ -276,25 +273,23 @@ const loginPage = {
       //console.log(login_options);
       //console.log(login_url);
 
-    // login API call in synced manner
-    (async () => {
-      try {
-        const response = await fetch(login_url, login_options);
-        //response.headers.forEach((value, key) => console.log(key, ": ", value))
-        const json = await response.json();
-        //console.log(json);
-        if (json.ok == 1){
-          console.log('login succeeded')
-          this.$emit('push-page', myDCs);
-        }else{
-          console.log('login failed')
+      // login API call in synced manner
+      (async () => {
+        try {
+          const response = await fetch(login_url, login_options);
+          //response.headers.forEach((value, key) => console.log(key, ": ", value))
+          const json = await response.json();
+          //console.log(json);
+          if (json.ok == 1){
+            console.log('login succeeded')
+            this.$emit('push-page', Datacenters);
+          }else{
+            console.log('login failed')
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-
-
+      })();
     }
   }
 };
@@ -312,7 +307,6 @@ var vm = new Vue({
 
 </script>
 
-  <link rel="stylesheet" href="app.css">
 </body>
 <html>
 
