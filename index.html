@@ -47,7 +47,7 @@
   </v-ons-page>
 </template>
 
-<!-- mydcs -->
+<!-- datacenters -->
 <template id="Datacenters">
   <v-ons-page>
 
@@ -81,24 +81,16 @@
 
   <div class="tabbar">
     <label class="tabbar__item">
-      <input type="radio" name="tabbar-b" checked="checked">
-      <button class="tabbar__button">
-        <!-- <i class="tabbar__icon ion-stop"></i> -->
-        <ons-icon @click="users" icon="fa-users" fixed-width="false" size="2x"></ons-icon>
+      <!-- <input type="radio" name="tabbar-b"> -->
+      <button @click="users" class="tabbar__button">
+        <ons-icon icon="fa-users" fixed-width="false" size="2x"></ons-icon>
       </button>
     </label>
 
     <label class="tabbar__item">
       <input type="radio" name="tabbar-b">
       <button class="tabbar__button">
-  <!--      <i class="tabbar__icon ion-record"></i> -->
-      </button>
-    </label>
-
-    <label class="tabbar__item">
-      <input type="radio" name="tabbar-b">
-      <button class="tabbar__button">
-  <!--      <i class="tabbar__icon ion-record"></i> -->
+        <i class="tabbar__icon ion-record"></i>
       </button>
     </label>
 
@@ -158,8 +150,42 @@
   </v-ons-page>
 </template>
 
+<template id="Users">
+  <v-ons-page>
 
-<!-- APP -->
+  <div class="toolbar toolbar--material">
+    <div class="toolbar__left toolbar--material__left">
+      <v-ons-back-button>Back</v-ons-back-button>
+    </div>
+
+    <div class="toolbar__center toolbar--material__center app-css-title-center">
+      <span>Users</span>
+    </div>
+
+    <div class="toolbar__right toolbar--material__right">
+      <input type="search" value="" placeholder="Search" class="search-input">
+    </div>
+  </div>
+
+<ul class="list list--material">
+  <li class="list-item list-item--material" v-for="ar in users">
+    <div class="list-item__left list-item--material__left">
+      <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
+    </div>
+
+    <div class="list-item__center list-item--material__center">
+      <div class="list-item__title list-item--material__title">{{ ar.name }}</div>
+      <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.location }}</span> {{ ar.email }}</div>
+    </div>
+
+    <div class="list-item__right list-item--material__right">
+      <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
+    </div>
+
+  </v-ons-page>
+</template>
+
+<!-- app -->
 <div id="app"></div>
 
 
@@ -199,13 +225,15 @@ const Datacenters = {
         }
       });
     },
-    users() { // glass/your-proile returns HTML while needig JSON
-      console.log('my profile clicked');
-      fetch(base_url + "glass/your-profile")
-        .then(response => response.text())
-        .then(text => {
-          console.log(text);
-        }); 
+    users() { 
+      console.log('users clicked');
+      this.$emit('push-page', {
+        extends: Users,
+        onsNavigatorOptions: {
+          animation: 'lift',
+          animationOptions: { duration: 0.5 }
+        }
+      });
     },
     getDatacenters() {
       fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true")
@@ -217,6 +245,29 @@ const Datacenters = {
     }
   }
 };
+
+const Users = {
+  key: 'Users',
+  template: '#Users',
+  data () {
+    return {
+      users: [{ id: "Something went wrong if you see this default value" }]
+    }
+  },
+  created() {
+    this.getUsers()
+  },
+  methods: {
+    getUsers() {
+      fetch(base_url + "nexcenter-jp/v2/users")
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          this.users = json
+        }); 
+    }
+  }
+}
 
 const accessRequest = {
   key: 'accessRequest',
