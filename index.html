@@ -70,7 +70,7 @@
       <div class="list-item__left list-item--material__left">
         <!-- <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg=="> -->
         <!--<img class="list-item__thumbnail list-item--material__thumbnail" src="img/singapore.png"> -->
-        <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="flagFiles[dc.globalRef]">
+        <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="getFlagFile(dc.globalRef)">
       </div>
 
       <div @click="selectedDC(dc.id)" class="list-item__center list-item--material__center list-item--chevron list-item--tappable">
@@ -203,7 +203,6 @@
 const Datacenters = {
   key: 'Datacenters',
   template: '#Datacenters',
-  flagFiles: {"DC-JP-00000038": "singapore.png", "DC-JP-00000029": "japan.png", "DC-JP-00000256": "germany.png", "DC-JP-00000257": "india.png"},
   data () {
     return {
       datacenters: [{ id: "Something went wrong if you see this default value" }]
@@ -244,7 +243,10 @@ const Datacenters = {
         }
       });
     },
-    flagIcon(globalRef) {
+    getFlagFile(globalRef) {
+      var flags = {"DC-JP-00000038": "img/singapore.png", "DC-JP-00000029": "img/japan.png", "DC-JP-00000256": "img/germany.png", "DC-JP-00000257": "img/india.png"};
+      return flags[globalRef]
+      //return "testtest"
     },
     getDatacenters() {
       fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true")
