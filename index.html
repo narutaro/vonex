@@ -68,7 +68,9 @@
     <li class="list-item list-item--material" v-for="dc in datacenters">
 
       <div class="list-item__left list-item--material__left">
-        <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
+        <!-- <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg=="> -->
+        <!--<img class="list-item__thumbnail list-item--material__thumbnail" src="img/singapore.png"> -->
+        <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="flagFiles[dc.globalRef]">
       </div>
 
       <div @click="selectedDC(dc.id)" class="list-item__center list-item--material__center list-item--chevron list-item--tappable">
@@ -170,12 +172,18 @@
 <ul class="list list--material">
   <li class="list-item list-item--material" v-for="ar in users">
     <div class="list-item__left list-item--material__left">
-      <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
+      <img class="list-item__thumbnail list-item--material__thumbnail" src="https://static01.nyt.com/newsgraphics/2017/07/17/got-matrix/f5b9cc4a9d71d8f75e294a5294ff13107118abcd/cropped/toned/tyrion-lannister.jpg"></img>
+      <!-- <ons-icon icon="fa-user" fixed-width="false" size="3x"></ons-icon> -->
     </div>
 
     <div class="list-item__center list-item--material__center">
       <div class="list-item__title list-item--material__title">{{ ar.name }}</div>
-      <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.location }}</span> {{ ar.email }}</div>
+      <div class="list-item__subtitle list-item--material__subtitle">
+        <ons-icon icon="fa-building" fixed-width="false"></ons-icon> {{ ar.location }}
+      </div>
+      <div class="list-item__subtitle list-item--material__subtitle">
+        <ons-icon icon="fa-envelope" fixed-width="false"></ons-icon> {{ ar.email }}
+      </div>
     </div>
 
     <div class="list-item__right list-item--material__right">
@@ -195,6 +203,7 @@
 const Datacenters = {
   key: 'Datacenters',
   template: '#Datacenters',
+  flagFiles: {"DC-JP-00000038": "singapore.png", "DC-JP-00000029": "japan.png", "DC-JP-00000256": "germany.png", "DC-JP-00000257": "india.png"},
   data () {
     return {
       datacenters: [{ id: "Something went wrong if you see this default value" }]
@@ -234,6 +243,8 @@ const Datacenters = {
           animationOptions: { duration: 0.5 }
         }
       });
+    },
+    flagIcon(globalRef) {
     },
     getDatacenters() {
       fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true")
