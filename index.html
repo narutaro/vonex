@@ -24,7 +24,7 @@
 
 <body>
 
-<!-- main -->
+<!--main-->
 <template id="main">
   <v-ons-navigator swipeable
     :options="{
@@ -36,7 +36,7 @@
   ></v-ons-navigator>
 </template>
 
-<!-- login -->
+<!--login-->
 <template id="loginPage">
   <v-ons-page>
     <div class="login-form">
@@ -47,7 +47,7 @@
   </v-ons-page>
 </template>
 
-<!-- datacenters -->
+<!--datacenters-->
 <template id="Datacenters">
   <v-ons-page>
 
@@ -108,7 +108,7 @@
   </v-ons-page>
 </template>
 
-<!-- ar -->
+<!--ar-->
 <template id="accessRequest">
   <v-ons-page>
 
@@ -126,32 +126,33 @@
     </div>
   </div>
 
-<ul class="list list--material">
-  <li class="list-item list-item--material" v-for="ar in access_requests">
-    <div class="list-item__left list-item--material__left">
-      <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
-    </div>
+  <ul class="list list--material">
+    <li class="list-item list-item--material" v-for="ar in access_requests">
+      <div class="list-item__left list-item--material__left">
+        <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
+      </div>
+    
+      <div class="list-item__center list-item--material__center">
+        <div class="list-item__title list-item--material__title">{{ ar.id }}</div>
+        <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.stateInformation }}</span> {{ ar.start }}</div>
+      </div>
 
-    <div class="list-item__center list-item--material__center">
-      <div class="list-item__title list-item--material__title">{{ ar.id }}</div>
-      <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.stateInformation }}</span> {{ ar.start }}</div>
-    </div>
-
-    <div class="list-item__right list-item--material__right">
-      <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
-    </div>
-  </li>
-</ul>
+      <div class="list-item__right list-item--material__right">
+        <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
+      </div>
+    </li>
+  </ul>
 
   <ons-fab position="bottom right">
     <ons-icon icon="md-plus"></ons-icon>
   </ons-fab>
 
-</div>
+  </div>
 
   </v-ons-page>
 </template>
 
+<!--users-->
 <template id="Users">
   <v-ons-page>
 
@@ -200,6 +201,7 @@
 
 <script>
 
+//_datacenters
 const Datacenters = {
   key: 'Datacenters',
   template: '#Datacenters',
@@ -244,9 +246,13 @@ const Datacenters = {
       });
     },
     getFlagFile(globalRef) {
-      var flags = {"DC-JP-00000038": "img/singapore.png", "DC-JP-00000029": "img/japan.png", "DC-JP-00000256": "img/germany.png", "DC-JP-00000257": "img/india.png"};
-      return flags[globalRef]
-      //return "testtest"
+      var flags = {
+        "DC-JP-00000038": "singapore.png",
+        "DC-JP-00000029": "japan.png",
+        "DC-JP-00000256": "germany.png",
+        "DC-JP-00000257": "india.png"
+      };
+      return "img/" + flags[globalRef]
     },
     getDatacenters() {
       fetch(base_url + "nexcenter-jp/v2/data_centers?presence=true")
@@ -259,6 +265,7 @@ const Datacenters = {
   }
 };
 
+//_users
 const Users = {
   key: 'Users',
   template: '#Users',
@@ -282,6 +289,7 @@ const Users = {
   }
 }
 
+//_ar
 const accessRequest = {
   key: 'accessRequest',
   template: '#accessRequest',
@@ -317,6 +325,7 @@ const accessRequest = {
   }
 };
 
+//_login
 const loginPage = {
   key: 'loginPage',
   template: '#loginPage',
@@ -358,6 +367,7 @@ const loginPage = {
   }
 };
 
+//_vue
 Vue.use(VueOnsen);
 var vm = new Vue({
   el: '#app',
