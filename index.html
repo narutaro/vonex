@@ -116,31 +116,34 @@
 <template id="accessRequest">
   <v-ons-page>
 
-  <div class="toolbar toolbar--material">
+  <div class="toolbar toolbar--material"> 
     <div class="toolbar__left toolbar--material__left">
-      <v-ons-back-button>Back</v-ons-back-button>
+      <v-ons-back-button></v-ons-back-button>
     </div>
 
     <div class="toolbar__center toolbar--material__center app-css-title-center">
-      <span>Access Requests</span>
+      <span>Requests</span>
     </div>
 
     <div class="toolbar__right toolbar--material__right">
       <input type="search" value="" placeholder="Search" class="search-input">
     </div>
   </div>
-
+  
   <ul class="list list--material">
     <li class="list-item list-item--material" v-for="ar in access_requests">
 
-<!--
-      <div class="list-item__left list-item--material__left">
-        <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
-      </div>
--->
+      <div class="list-item__left list-item--material__left"></div>
     
       <div class="list-item__center list-item--material__center">
-        <div class="list-item__title list-item--material__title">{{ ar.request }}</div>
+        <div class="list-item__title list-item--material__title">
+          <span>{{ ar.request }}</span>
+          <span style="float: right">
+            <ons-icon icon="fa-edit" fixed-width="false"></ons-icon>
+            <ons-icon icon="fa-info" fixed-width="false"></ons-icon>
+            <!-- <ons-icon icon="fa-info-circle" fixed-width="false"></ons-icon> -->
+          </span>
+        </div>
         <div class="list-item__subtitle list-item--material__subtitle">
           <ons-icon icon="fa-user" fixed-width="false"></ons-icon> {{ userIdToUserName(ar.requestedBy.id) }}
         </div>
@@ -156,9 +159,7 @@
         </div>
       </div>
 
-      <div class="list-item__right list-item--material__right">
-        <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
-      </div>
+      <div class="list-item__right list-item--material__right"></div>
     </li>
   </ul>
 
@@ -177,7 +178,7 @@
 
   <div class="toolbar toolbar--material">
     <div class="toolbar__left toolbar--material__left">
-      <v-ons-back-button>Back</v-ons-back-button>
+      <v-ons-back-button></v-ons-back-button>
     </div>
 
     <div class="toolbar__center toolbar--material__center app-css-title-center">
@@ -197,7 +198,12 @@
     </div>
 
     <div class="list-item__center list-item--material__center">
-      <div class="list-item__title list-item--material__title">{{ ar.name }}</div>
+      <div class="list-item__title list-item--material__title">
+        <span>{{ ar.name }}</span>
+        <span style="float: right">
+          <ons-icon icon="fa-info" fixed-width="false"></ons-icon>
+        </span>
+      </div>
       <div class="list-item__subtitle list-item--material__subtitle">
         <ons-icon icon="fa-building" fixed-width="false"></ons-icon> {{ ar.location }}
       </div>
@@ -206,9 +212,11 @@
       </div>
     </div>
 
+<!--
     <div class="list-item__right list-item--material__right">
       <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
     </div>
+-->
 
   </v-ons-page>
 </template>
