@@ -8,6 +8,7 @@
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/onsen/2.10.6/js/onsenui.min.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-onsenui"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="params.js"></script>
   <script>
     function createURLSearchParams(data) {
@@ -28,8 +29,11 @@
 <template id="main">
   <v-ons-navigator swipeable
     :options="{
-      animation: 'fade',
-      animationOptions: {duration: 3, timing: 'ease-in'}
+      //animation: 'fade',
+      animation: 'slide',
+      animationOptions: {duration: 0.5, timing: 'ease-in'}
+      //animationOptions: {duration: 3}
+      //animationOptions: { timing: 'ease-in'}
     }"
     :page-stack="pageStack"
     @push-page="pageStack.push($event)"
@@ -128,13 +132,28 @@
 
   <ul class="list list--material">
     <li class="list-item list-item--material" v-for="ar in access_requests">
+
+<!--
       <div class="list-item__left list-item--material__left">
         <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg==">
       </div>
+-->
     
       <div class="list-item__center list-item--material__center">
-        <div class="list-item__title list-item--material__title">{{ ar.id }}</div>
-        <div class="list-item__subtitle list-item--material__subtitle"><span class="status-pending">{{ ar.stateInformation }}</span> {{ ar.start }}</div>
+        <div class="list-item__title list-item--material__title">{{ ar.request }}</div>
+        <div class="list-item__subtitle list-item--material__subtitle">
+          <ons-icon icon="fa-user" fixed-width="false"></ons-icon> {{ userIdToUserName(ar.requestedBy.id) }}
+        </div>
+        <div class="list-item__subtitle list-item--material__subtitle">
+          <ons-icon icon="fa-clock" fixed-width="false"></ons-icon> {{ dateFormat(ar.start) }}
+          <ons-icon icon="fa-caret-right" fixed-width="false"></ons-icon> {{ dateFormat(ar.end) }}
+        </div>
+        <div class="list-item__subtitle list-item--material__subtitle">
+          <ons-icon icon="fa-tasks" fixed-width="false"></ons-icon> {{ ar.stateInformation }}
+        </div>
+        <div class="list-item__subtitle list-item--material__subtitle">
+          <ons-icon icon="fa-server" fixed-width="false"></ons-icon> {{ ar.cabs }}
+        </div>
       </div>
 
       <div class="list-item__right list-item--material__right">
@@ -207,7 +226,7 @@ const Datacenters = {
   template: '#Datacenters',
   data () {
     return {
-      datacenters: [{ id: "Something went wrong if you see this default value" }]
+      datacenters: [{ id: "datacenters" }]
     }
   },
   created() {
@@ -231,7 +250,7 @@ const Datacenters = {
         },
         onsNavigatorOptions: {
           animation: 'slide',
-          animationOptions: { duration: 0.5 }
+          //animationOptions: { duration: 0.5 }
         }
       });
     },
@@ -279,7 +298,7 @@ const Users = {
   },
   methods: {
     getUsers() {
-      fetch(base_url + "nexcenter-jp/v2/users")
+      fetch(base_url + "nexcenter-jp/v2/users?limit=0")
         .then(response => response.json())
         .then(json => {
           console.log(json);
@@ -293,19 +312,18 @@ const Users = {
 const accessRequest = {
   key: 'accessRequest',
   template: '#accessRequest',
+  requestedUserName: '',
   data () {
     return {
-      access_requests: [
-        { message: 'Foo' },
-        { message: 'Bar' },
-        { message: 'Hoge' },
-        { message: 'Huga' }
-      ],
+      access_requests: [ { id: "access_requests" } ],
+      users: [ { id: "users" } ]
     }
   },
   created() {
+    this.getUsers();
+  },
+  mounted() {
     this.getAccessRequests();
-    console.log("i received dcid as " + this.selectedDcId);
   },
   methods: {
     logout() {
@@ -315,12 +333,37 @@ const accessRequest = {
       });
     },
     getAccessRequests() {
+      console.log("i received dcid as " + this.selectedDcId);
       fetch(base_url + "nexcenter-jp/v2/" + this.selectedDcId + "/access_requests")
         .then(response => response.json())
         .then(json => {
           console.log(json);
           this.access_requests = json;
         }); 
+    },
+    getUsers() {
+      fetch(base_url + "nexcenter-jp/v2/users?limit=0")
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          this.users = json
+        }); 
+    },
+    userIdToUserName(userId) {
+      const userProf = this.users.find((userProf) => {
+        return (userProf.id === userId);
+      });
+      return userProf.name
+    },
+    dateFormat(iso8601) {
+      date = new Date(iso8601)
+      console.log(date);
+      yyyy = date.getFullYear()
+      mm = date.getMonth() + 1
+      dd = date.getDate()
+      hh = ("0" + date.getHours()).slice(-2)
+      mi = ("0" + date.getMinutes()).slice(-2)
+      return yyyy + "/" + mm + "/" + dd + " " + hh + ":" + mi
     }
   }
 };
