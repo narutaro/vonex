@@ -16,6 +16,20 @@
       Object.keys(data).forEach(key => params.append(key, data[key]));
       return params;
     }
+   
+    function findNameById(id, items) {
+      // items here is array of hash
+      var foundItem = { name: "default" };
+      foundItem = items.find((item) => {
+        //return (item.id === id);
+        if (item.id === id) {
+          return item.id
+        } else {
+          return "not found"
+        }
+      });
+      return foundItem.name
+    }
 
    function isAuth() {
    }
@@ -72,8 +86,6 @@
     <li class="list-item list-item--material" v-for="dc in datacenters">
 
       <div class="list-item__left list-item--material__left">
-        <!-- <img class="list-item__thumbnail list-item--material__thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwJCB8v/9zErgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAvSURBVFjD7c0BDQAACAMgtX+KJzWGm4MCdJK6MHVELBaLxWKxWCwWi8VisVj8MV7qBgI2A8rYpgAAAABJRU5ErkJggg=="> -->
-        <!--<img class="list-item__thumbnail list-item--material__thumbnail" src="img/singapore.png"> -->
         <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="getFlagFile(dc.globalRef)">
       </div>
 
@@ -145,7 +157,7 @@
           </span>
         </div>
         <div class="list-item__subtitle list-item--material__subtitle">
-          <ons-icon icon="fa-user" fixed-width="false"></ons-icon> {{ userIdToUserName(ar.requestedBy.id) }}
+          <ons-icon icon="fa-user" fixed-width="false"></ons-icon> {{ getRequesterName(ar.requestedBy.id) }}
         </div>
         <div class="list-item__subtitle list-item--material__subtitle">
           <ons-icon icon="fa-clock" fixed-width="false"></ons-icon> {{ dateFormat(ar.start) }}
@@ -155,7 +167,10 @@
           <ons-icon icon="fa-tasks" fixed-width="false"></ons-icon> {{ ar.stateInformation }}
         </div>
         <div class="list-item__subtitle list-item--material__subtitle">
-          <ons-icon icon="fa-server" fixed-width="false"></ons-icon> {{ ar.cabs }}
+          <ons-icon icon="fa-server" fixed-width="false"></ons-icon> {{ getCabNames(ar.cabs) }}
+        </div>
+        <div class="list-item__subtitle list-item--material__subtitle">
+          <ons-icon icon="fa-users" fixed-width="false"></ons-icon> {{ getAttendeeNames(ar.attendees) }}
         </div>
       </div>
 
@@ -323,12 +338,15 @@ const accessRequest = {
   requestedUserName: '',
   data () {
     return {
-      access_requests: [ { id: "access_requests" } ],
-      users: [ { id: "users" } ]
+      // "selectedDcId" is passed passed by datacenters page
+      access_requests: [ { id: "access_request_id" } ],
+      users: [ { id: "user_id" } ],
+      cabs: [ { id: "cab_id" } ]
     }
   },
   created() {
     this.getUsers();
+    this.getCabs();
   },
   mounted() {
     this.getAccessRequests();
@@ -357,11 +375,33 @@ const accessRequest = {
           this.users = json
         }); 
     },
-    userIdToUserName(userId) {
-      const userProf = this.users.find((userProf) => {
-        return (userProf.id === userId);
+    getCabs() {
+      fetch(base_url + "nexcenter-jp/v2/"  + this.selectedDcId + "/cabs")
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          this.cabs = json
+        }); 
+    },
+    getRequesterName(userId) {
+      return findNameById(userId, this.users);
+    },
+    getAttendeeNames(attendees) {
+      var attendeeNames = "";
+      attendees.forEach((attendee) => {
+        attendeeNames = attendeeNames + findNameById(attendee.id, this.users) + ", "
       });
-      return userProf.name
+      return attendeeNames.slice(0, -2)
+    },
+    getCabNames(cabs) {
+      var cabNames = "";
+      cabs.forEach((cab) => {
+        //console.log("cab.id: " + cab.id);
+        //console.log("this.cabs: " + this.cabs);
+        cabNames = cabNames + findNameById(cab.id, this.cabs) + ", "
+        console.log(cabNames);
+      });
+      return cabNames.slice(0, -2)
     },
     dateFormat(iso8601) {
       date = new Date(iso8601)

@@ -1,0 +1,36 @@
+{
+  "start": "2019-01-05T03:16:17.145Z",
+  "end": "2019-01-05T03:16:17.145Z",
+  "description": "string",
+  "attendees": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "additionalProp1": {},
+      "additionalProp2": {},
+      "additionalProp3": {}
+    }
+  ],
+  "details": {
+    "equipmentIn": true,
+    "equipmentOut": true
+  },
+  "cabs": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "additionalProp1": {
+        "label": "string",
+        "description": "string"
+      },
+      "additionalProp2": {
+        "label": "string",
+        "description": "string"
+      },
+      "additionalProp3": {
+        "label": "string",
+        "description": "string"
+      }
+    }
+  ],
+  "willUploadFile": false
+}
+
