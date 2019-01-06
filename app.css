@@ -51,3 +51,7 @@ ons-fab.fab--bottom__right {
   overflow: hidden !important;
   text-overflow: ellipsis;
 }
+
+.select-input.select-input--material.datepicker-margin {
+  margin-right: 15px;
+}
