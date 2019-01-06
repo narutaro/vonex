@@ -44,4 +44,10 @@ ons-fab.fab--bottom__right {
   background-color: #04B404; /*緑*/
 }
 
-
+.span-three-dot-leader {
+  display: inline-block;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}

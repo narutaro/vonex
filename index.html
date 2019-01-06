@@ -25,7 +25,7 @@
         return foundItem.name
       } else {
         console.log("invalid id? = "  + id);
-        return "NF"
+        return "?"
       }
       console.log("foundItem.name: " + foundItem.name);
       return foundItem.name
@@ -164,13 +164,13 @@
           <ons-icon icon="fa-caret-right" fixed-width="false"></ons-icon> {{ dateFormat(ar.end) }}
         </div>
         <div class="list-item__subtitle list-item--material__subtitle">
-          <ons-icon icon="fa-tasks" fixed-width="false"></ons-icon> {{ ar.stateInformation }}
+          <ons-icon icon="fa-server" fixed-width="false"></ons-icon> <span class="span-three-dot-leader">{{ getCabNames(ar.cabs) }}</span>
         </div>
         <div class="list-item__subtitle list-item--material__subtitle">
-          <ons-icon icon="fa-server" fixed-width="false"></ons-icon> {{ getCabNames(ar.cabs) }}
+          <ons-icon icon="fa-users" fixed-width="false"></ons-icon> <span class="span-three-dot-leader">{{ getAttendeeNames(ar.attendees) }}</span>
         </div>
-        <div class="list-item__subtitle list-item--material__subtitle shorten">
-          <ons-icon icon="fa-users" fixed-width="false"></ons-icon> {{ getAttendeeNames(ar.attendees) }}
+        <div class="list-item__subtitle list-item--material__subtitle">
+          <ons-icon icon="fa-tasks" fixed-width="false"></ons-icon> {{ ar.stateInformation }}
         </div>
       </div>
 
