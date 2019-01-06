@@ -18,16 +18,16 @@
     }
    
     function findNameById(id, items) {
-      // items here is array of hash
-      var foundItem = { name: "default" };
-      foundItem = items.find((item) => {
-        //return (item.id === id);
-        if (item.id === id) {
-          return item.id
-        } else {
-          return "not found"
-        }
+      var foundItem = items.find((item) => {
+        return (item.id === id);
       });
+      if (foundItem) {
+        return foundItem.name
+      } else {
+        console.log("invalid id? = "  + id);
+        return "NF"
+      }
+      console.log("foundItem.name: " + foundItem.name);
       return foundItem.name
     }
 
@@ -169,7 +169,7 @@
         <div class="list-item__subtitle list-item--material__subtitle">
           <ons-icon icon="fa-server" fixed-width="false"></ons-icon> {{ getCabNames(ar.cabs) }}
         </div>
-        <div class="list-item__subtitle list-item--material__subtitle">
+        <div class="list-item__subtitle list-item--material__subtitle shorten">
           <ons-icon icon="fa-users" fixed-width="false"></ons-icon> {{ getAttendeeNames(ar.attendees) }}
         </div>
       </div>
