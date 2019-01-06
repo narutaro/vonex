@@ -10,30 +10,7 @@
   <script src="https://unpkg.com/vue-onsenui"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="params.js"></script>
-  <script>
-    function createURLSearchParams(data) {
-      const params = new URLSearchParams();
-      Object.keys(data).forEach(key => params.append(key, data[key]));
-      return params;
-    }
-   
-    function findNameById(id, items) {
-      var foundItem = items.find((item) => {
-        return (item.id === id);
-      });
-      if (foundItem) {
-        return foundItem.name
-      } else {
-        console.log("invalid id? = "  + id);
-        return "?"
-      }
-      console.log("foundItem.name: " + foundItem.name);
-      return foundItem.name
-    }
-
-   function isAuth() {
-   }
-  </script>
+  <script src="mylib.js"></script>
   <link rel="stylesheet" href="app.css">
 </head>
 
@@ -331,7 +308,7 @@ const Users = {
   }
 }
 
-//_ar
+//_ar 
 const accessRequest = {
   key: 'accessRequest',
   template: '#accessRequest',
@@ -347,9 +324,10 @@ const accessRequest = {
   created() {
     this.getUsers();
     this.getCabs();
+    this.getAccessRequests();
   },
   mounted() {
-    this.getAccessRequests();
+    //this.getAccessRequests();
   },
   methods: {
     logout() {
@@ -457,6 +435,35 @@ const loginPage = {
     }
   }
 };
+
+//_create_access_request
+const createAccessRequest = {
+  key: "createAccessRequest",
+  template: "#createAccessRequest",
+  data () {
+    return {
+      form: {
+        name: '',
+        password: ''
+      }
+    }
+  },
+  created() {
+    this.getUsers()
+  },
+  methods: {
+    getUsers() {
+      fetch(base_url + "nexcenter-jp/v2/users?limit=0")
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          this.users = json
+        }); 
+    }
+  }
+}
+
+//_ar 
 
 //_vue
 Vue.use(VueOnsen);
