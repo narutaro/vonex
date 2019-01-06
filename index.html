@@ -11,6 +11,11 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="params.js"></script>
   <script src="mylib.js"></script>
+  <!-- vue-datetime 
+  <script src="https://cdn.jsdelivr.net/npm/luxon@1.9.0/build/cjs-browser/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/weekstart@1.0.0/dist/commonjs/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-datetime@1.0.0-beta.8/dist/vue-datetime.min.js"></script>
+  -->
   <link rel="stylesheet" href="app.css">
 </head>
 
@@ -101,7 +106,7 @@
   </v-ons-page>
 </template>
 
-<!--ar-->
+<!--taccessRequest-->
 <template id="accessRequest">
   <v-ons-page>
 
@@ -155,7 +160,7 @@
     </li>
   </ul>
 
-  <ons-fab position="bottom right">
+  <ons-fab position="bottom right" @click="showRequestForm">
     <ons-icon icon="md-plus"></ons-icon>
   </ons-fab>
 
@@ -164,7 +169,7 @@
   </v-ons-page>
 </template>
 
-<!--users-->
+<!--tusers-->
 <template id="Users">
   <v-ons-page>
 
@@ -209,6 +214,110 @@
       <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
     </div>
 -->
+  </li>
+</ul>
+
+  </v-ons-page>
+</template>
+
+<!--tcreateAccessRequest-->
+<template id="createAccessRequest">
+  <v-ons-page>
+
+  <div class="toolbar toolbar--material">
+    <div class="toolbar__left toolbar--material__left">
+      <v-ons-back-button></v-ons-back-button>
+    </div>
+
+    <div class="toolbar__center toolbar--material__center app-css-title-center">
+      <span>Create Access Request</span>
+    </div>
+
+    <div class="toolbar__right toolbar--material__right">
+    </div>
+  </div>
+
+<ul class="list list--material">
+    <li class="list-header list-header--material">Start</li>
+    <li class="list-item list-item--nodivider">
+      <div class="list-item__left list-item--material__left">
+        <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
+      </div>
+      <div class="list-item__center list-item--nodivider__center">
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="yr in years">{{ yr }}</option>
+          </select>
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="mo in months">{{ mo }}</option>
+          </select>
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="da in dates">{{ da }}</option>
+          </select>
+      </div>
+    </li>
+    <li class="list-item list-item--nodivider">
+      <div class="list-item__left list-item--material__left">
+        <ons-icon icon="fa-clock" fixed-width="false"></ons-icon>
+      </div>
+      <div class="list-item__center list-item--nodivider__center">
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="yr in years">{{ yr }}</option>
+          </select>
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="mo in months">{{ mo }}</option>
+          </select>
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="da in dates">{{ da }}</option>
+          </select>
+      </div>
+    </li>
+  </ul>
+
+  <ul class="list list--material">
+    <li class="list-header list-header--material">
+      Start
+    </li>
+    <li class="list-item list-item--material">
+      <div class="list-item__left list-item--material__left">
+        <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
+      </div>
+      <div class="list-item__center list-item--material__center">
+        <select class="select-input select-input--material datepicker-margin">
+          <option v-for="yr in years">{{ yr }}</option>
+        </select>
+        <select class="select-input select-input--material datepicker-margin">
+          <option v-for="mo in months">{{ mo }}</option>
+        </select>
+        <select class="select-input select-input--material datepicker-margin">
+          <option v-for="da in dates">{{ da }}</option>
+        </select>
+      </div>
+      <div class="list-item__right list-item--material__right">
+        <span>{{ mo }}</span>
+      </div>
+    </li>
+    <li class="list-item list-item--material">
+      <div class="list-item__left list-item--material__left">
+        <ons-icon icon="fa-clock" fixed-width="false"></ons-icon>
+      </div>
+      <div class="list-item__center list-item--material__center">
+        <select class="select-input select-input--material datepicker-margin">
+          <option v-for="yr in years">{{ yr }}</option>
+        </select>
+        <select class="select-input select-input--material datepicker-margin">
+          <option v-for="mo in months">{{ mo }}</option>
+        </select>
+        <select class="select-input select-input--material datepicker-margin">
+          <option v-for="da in dates">{{ da }}</option>
+        </select>
+      </div>
+      <div class="list-item__right list-item--material__right">
+        <span>{{ mo }}</span>
+      </div>
+    </li>
+  </ul>
+  <v-ons-button @click="">Request</v-ons-button>
+
 
   </v-ons-page>
 </template>
@@ -390,6 +499,16 @@ const accessRequest = {
       hh = ("0" + date.getHours()).slice(-2)
       mi = ("0" + date.getMinutes()).slice(-2)
       return yyyy + "/" + mm + "/" + dd + " " + hh + ":" + mi
+    },
+    showRequestForm() {
+      console.log('showRequestForm clicked');
+      this.$emit('push-page', {
+        extends: createAccessRequest,
+        onsNavigatorOptions: {
+          animation: 'lift',
+          animationOptions: { duration: 0.5 }
+        }
+      });
     }
   }
 };
@@ -442,6 +561,10 @@ const createAccessRequest = {
   template: "#createAccessRequest",
   data () {
     return {
+      years: [ "2019", "2020" ],
+      months: [ "Jan", "Feb", "Mar" ],
+      dates:  [ 1, 2, 3, 4, 5 ],
+      startTime: 1,
       form: {
         name: '',
         password: ''
@@ -449,7 +572,7 @@ const createAccessRequest = {
     }
   },
   created() {
-    this.getUsers()
+    //this.getUsers()
   },
   methods: {
     getUsers() {
@@ -463,8 +586,6 @@ const createAccessRequest = {
   }
 }
 
-//_ar 
-
 //_vue
 Vue.use(VueOnsen);
 var vm = new Vue({
@@ -472,7 +593,8 @@ var vm = new Vue({
   template: '#main',
   data() {
     return {
-      pageStack: [loginPage]
+      //pageStack: [loginPage]
+      pageStack: [createAccessRequest]
     };
   }
 });
