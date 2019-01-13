@@ -1,3 +1,4 @@
 # url.js has just one line: const base_url = "your-base-url";
 params.js
+sandbox/*
 .DS_Store
