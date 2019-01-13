@@ -209,11 +209,8 @@
       </div>
     </div>
 
-<!--
-    <div class="list-item__right list-item--material__right">
-      <i style="color:#ccc" class="list-item__icon list-item--material__icon zmdi zmdi-comment"></i>
-    </div>
--->
+    <div class="list-item__right list-item--material__right"></div>
+
   </li>
 </ul>
 
@@ -238,20 +235,20 @@
   </div>
 
 <ul class="list list--material">
-    <li class="list-header list-header--material">Start</li>
+    <li class="list-header list-header--material">Start: {{start.selectedYear}} {{start.selectedMonth}} {{start.selectedDate}}</li>
     <li class="list-item list-item--nodivider">
       <div class="list-item__left list-item--material__left">
         <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
       </div>
       <div class="list-item__center list-item--nodivider__center">
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="yr in years">{{ yr }}</option>
+          <select class="select-input select-input--material datepicker-margin" v-model="start.selectedYear">
+            <option v-for="syr in start.years">{{ syr }}</option>
           </select>
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="mo in months">{{ mo }}</option>
+          <select class="select-input select-input--material datepicker-margin" v-model="start.selectedMonth">
+            <option v-for="smo in start.months">{{ smo }}</option>
           </select>
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="da in dates">{{ da }}</option>
+          <select class="select-input select-input--material datepicker-margin" v-model="start.selectedDate">
+            <option v-for="sda in start.dates">{{ sda }}</option>
           </select>
       </div>
     </li>
@@ -261,62 +258,35 @@
       </div>
       <div class="list-item__center list-item--nodivider__center">
           <select class="select-input select-input--material datepicker-margin">
-            <option v-for="yr in years">{{ yr }}</option>
+            <option v-for="shr in start.hour">{{ shr }}</option>
           </select>
           <select class="select-input select-input--material datepicker-margin">
-            <option v-for="mo in months">{{ mo }}</option>
-          </select>
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="da in dates">{{ da }}</option>
+            <option v-for="smi in start.minute">{{ smi }}</option>
           </select>
       </div>
     </li>
-  </ul>
+</ul>
+<ul class="list list--material">
+    <li class="list-header list-header--material">End</li>
+    <li class="list-item list-item--nodivider">
+      <div class="list-item__left list-item--material__left">
+        <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
+      </div>
+      <div class="list-item__center list-item--nodivider__center">
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="syr in start.years">{{ syr }}</option>
+          </select>
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="smo in start.months">{{ smo }}</option>
+          </select>
+          <select class="select-input select-input--material datepicker-margin">
+            <option v-for="sda in start.dates">{{ sda }}</option>
+          </select>
+      </div>
+    </li>
+</ul>
 
-  <ul class="list list--material">
-    <li class="list-header list-header--material">
-      Start
-    </li>
-    <li class="list-item list-item--material">
-      <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
-      </div>
-      <div class="list-item__center list-item--material__center">
-        <select class="select-input select-input--material datepicker-margin">
-          <option v-for="yr in years">{{ yr }}</option>
-        </select>
-        <select class="select-input select-input--material datepicker-margin">
-          <option v-for="mo in months">{{ mo }}</option>
-        </select>
-        <select class="select-input select-input--material datepicker-margin">
-          <option v-for="da in dates">{{ da }}</option>
-        </select>
-      </div>
-      <div class="list-item__right list-item--material__right">
-        <span>{{ mo }}</span>
-      </div>
-    </li>
-    <li class="list-item list-item--material">
-      <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-clock" fixed-width="false"></ons-icon>
-      </div>
-      <div class="list-item__center list-item--material__center">
-        <select class="select-input select-input--material datepicker-margin">
-          <option v-for="yr in years">{{ yr }}</option>
-        </select>
-        <select class="select-input select-input--material datepicker-margin">
-          <option v-for="mo in months">{{ mo }}</option>
-        </select>
-        <select class="select-input select-input--material datepicker-margin">
-          <option v-for="da in dates">{{ da }}</option>
-        </select>
-      </div>
-      <div class="list-item__right list-item--material__right">
-        <span>{{ mo }}</span>
-      </div>
-    </li>
-  </ul>
-  <v-ons-button @click="">Request</v-ons-button>
+  <v-ons-button @click="submitRequest">Request</v-ons-button>
 
 
   </v-ons-page>
@@ -561,10 +531,25 @@ const createAccessRequest = {
   template: "#createAccessRequest",
   data () {
     return {
-      years: [ "2019", "2020" ],
-      months: [ "Jan", "Feb", "Mar" ],
-      dates:  [ 1, 2, 3, 4, 5 ],
-      startTime: 1,
+      start: {
+        years: [ "2019", "2020" ],
+        months: [ "Jan", "Feb", "Mar" ],
+        dates:  [ 1, 2, 3, 4, 5 ],
+        hour:  [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+        minute:  [ 0, 15, 30, 45 ],
+        selectedYear: "",
+        selectedMonth: "",
+        selectedDate: "",
+        startTime: 1
+      },
+      end: {
+        years: [ "2019", "2020" ],
+        months: [ "Jan", "Feb", "Mar" ],
+        dates:  [ 1, 2, 3, 4, 5 ],
+        hour:  [ 1, 2, 3, 4, 5 ],
+        minute:  [ 0, 15, 30, 45 ],
+        startTime: 1
+      },
       form: {
         name: '',
         password: ''
@@ -575,6 +560,11 @@ const createAccessRequest = {
     //this.getUsers()
   },
   methods: {
+    submitRequest() {
+      console.log(this.start);
+      console.log(this.end);
+      console.log(this.start.selectedYear);
+    },
     getUsers() {
       fetch(base_url + "nexcenter-jp/v2/users?limit=0")
         .then(response => response.json())
