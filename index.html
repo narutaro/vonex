@@ -5,17 +5,11 @@
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
   <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/onsen/2.10.6/js/onsenui.min.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-onsenui"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="params.js"></script>
   <script src="mylib.js"></script>
-  <!-- vue-datetime 
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.9.0/build/cjs-browser/luxon.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/weekstart@1.0.0/dist/commonjs/main.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue-datetime@1.0.0-beta.8/dist/vue-datetime.min.js"></script>
-  -->
   <link rel="stylesheet" href="app.css">
 </head>
 
@@ -234,54 +228,87 @@
     </div>
   </div>
 
+
+<!--
+    <v-ons-list-item v-for="(vegetable, $index) in vegetables" :key="vegetable" tappable>
+      <label class="left">
+        <v-ons-radio
+          :input-id="'radio-' + $index"
+          :value="vegetable"
+          v-model=" selectedVegetable"
+        >
+        </v-ons-radio>
+      </label>
+      <label :for="'radio-' + $index" class="center">
+        {{ vegetable }}
+      </label>
+    </v-ons-list-item>
+-->
+
+
 <ul class="list list--material">
-    <li class="list-header list-header--material">Start: {{start.selectedYear}} {{start.selectedMonth}} {{start.selectedDate}}</li>
+    <li class="list-header list-header--material">
+      Date / Time / Duration {{ selectedDate }}
+    </li>
     <li class="list-item list-item--nodivider">
       <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
+        <ons-icon icon="fa-calendar-alt" fixed-width="false" size="2x"></ons-icon>
       </div>
-      <div class="list-item__center list-item--nodivider__center">
-          <select class="select-input select-input--material datepicker-margin" v-model="start.selectedYear">
-            <option v-for="syr in start.years">{{ syr }}</option>
-          </select>
-          <select class="select-input select-input--material datepicker-margin" v-model="start.selectedMonth">
-            <option v-for="smo in start.months">{{ smo }}</option>
-          </select>
-          <select class="select-input select-input--material datepicker-margin" v-model="start.selectedDate">
-            <option v-for="sda in start.dates">{{ sda }}</option>
-          </select>
+      <div v-for="(date, $index) in startDate" class="list-item__center list-item--nodivider__center">
+        <label class="radio-button radio-button--material radio-button-margin">
+          <v-ons-radio
+            :input-id="'radio-' + $index"
+            :value="date" 
+            v-model="selectedDate"
+          ></v-ons-radio>
+        </label>
+        <label :for="'radio-' + $index">
+          {{ date }}
+        </label>
       </div>
     </li>
     <li class="list-item list-item--nodivider">
       <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-clock" fixed-width="false"></ons-icon>
+        <ons-icon icon="fa-clock" fixed-width="false" size="2x"></ons-icon>
       </div>
-      <div class="list-item__center list-item--nodivider__center">
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="shr in start.hour">{{ shr }}</option>
-          </select>
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="smi in start.minute">{{ smi }}</option>
-          </select>
+        <div class="list-item__center list-item--nodivider__center">
+        <label class="radio-button radio-button--material radio-button-margin">
+          <input type="radio" class="radio-button__input radio-button--material__input" name="stime" checked="checked">
+          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
+          9am
+        </label>
+        <label class="radio-button radio-button--material radio-button-margin">
+          <input type="radio" class="radio-button__input radio-button--material__input" name="stime">
+          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
+          12pm
+        </label>
+        <label class="radio-button radio-button--material radio-button-margin">
+          <input type="radio" class="radio-button__input radio-button--material__input" name="stime">
+          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
+          3pm
+        </label>
       </div>
     </li>
-</ul>
-<ul class="list list--material">
-    <li class="list-header list-header--material">End</li>
     <li class="list-item list-item--nodivider">
       <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-calendar-alt" fixed-width="false"></ons-icon>
+        <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
       </div>
-      <div class="list-item__center list-item--nodivider__center">
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="syr in start.years">{{ syr }}</option>
-          </select>
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="smo in start.months">{{ smo }}</option>
-          </select>
-          <select class="select-input select-input--material datepicker-margin">
-            <option v-for="sda in start.dates">{{ sda }}</option>
-          </select>
+        <div class="list-item__center list-item--nodivider__center">
+        <label class="radio-button radio-button--material radio-button-margin">
+          <input type="radio" class="radio-button__input radio-button--material__input" name="duration" checked="checked">
+          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
+          6H
+        </label>
+        <label class="radio-button radio-button--material radio-button-margin">
+          <input type="radio" class="radio-button__input radio-button--material__input" name="duration">
+          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
+          12H
+        </label>
+        <label class="radio-button radio-button--material radio-button-margin">
+          <input type="radio" class="radio-button__input radio-button--material__input" name="duration">
+          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
+          24H
+        </label>
       </div>
     </li>
 </ul>
@@ -531,6 +558,8 @@ const createAccessRequest = {
   template: "#createAccessRequest",
   data () {
     return {
+      startDate: ["today", "tomorrow"],
+      selectedDate: "",
       start: {
         years: [ "2019", "2020" ],
         months: [ "Jan", "Feb", "Mar" ],
@@ -563,7 +592,7 @@ const createAccessRequest = {
     submitRequest() {
       console.log(this.start);
       console.log(this.end);
-      console.log(this.start.selectedYear);
+      console.log(this.selectedDate);
     },
     getUsers() {
       fetch(base_url + "nexcenter-jp/v2/users?limit=0")
