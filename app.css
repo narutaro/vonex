@@ -25,6 +25,17 @@ ons-fab.fab--bottom__right {
 }
 */
 
+.time-options {
+  padding: 3px 6px;
+  margin-right: 8px;
+  margin-left: 1px;
+  font-size: 75%;
+  color: white;
+  border-radius: 6px;
+  box-shadow: 0 0 3px #ddd;
+  white-space: nowrap;
+}
+
 .status-pending, .status-canceled {
   padding: 3px 6px;
   margin-right: 8px;
@@ -54,4 +65,8 @@ ons-fab.fab--bottom__right {
 
 .select-input.select-input--material.datepicker-margin {
   margin-right: 15px;
+}
+
+.radio-button.radio-button--material.radio-button-margin {
+ margin-right: 15px;
 }
