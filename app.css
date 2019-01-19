@@ -63,6 +63,7 @@ ons-fab.fab--bottom__right {
   text-overflow: ellipsis;
 }
 
+/*
 .select-input.select-input--material.datepicker-margin {
   margin-right: 15px;
 }
@@ -70,3 +71,33 @@ ons-fab.fab--bottom__right {
 .radio-button.radio-button--material.radio-button-margin {
  margin-right: 15px;
 }
+*/
+
+/* radio button */
+.radio-inline__input {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+}
+
+.radio-inline__label {
+    display: inline-block;
+    padding: 5px 10px;
+    /* margin-right: 18px; */
+    border-radius: 10px;
+    transition: all .2s;
+}
+
+.radio-inline__input:checked + .radio-inline__label {
+    background: #0076ff;
+    color: #fff;
+    /* text-shadow: 0 0 1px rgba(0,0,0,.7); */
+}
+
+.radio-inline__input:focus + .radio-inline__label {
+    outline-color: #4D90FE;
+    outline-offset: -2px;
+    outline-style: auto;
+    outline-width: 5px;
+}
+~   
+

@@ -8,6 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-onsenui"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.js"></script>
   <script src="params.js"></script>
   <script src="mylib.js"></script>
   <link rel="stylesheet" href="app.css">
@@ -217,7 +218,7 @@
 
   <div class="toolbar toolbar--material">
     <div class="toolbar__left toolbar--material__left">
-      <v-ons-back-button></v-ons-back-button>
+      <v-ons-back-button>@</v-ons-back-button>
     </div>
 
     <div class="toolbar__center toolbar--material__center app-css-title-center">
@@ -228,90 +229,76 @@
     </div>
   </div>
 
+  <ul class="list list--material">
+      <li class="list-header list-header--material">
+        Date / Time / Duration: {{ selectedDate }} {{ selectedTime }} {{ selectedDuration }}
+      </li>
 
-<!--
-    <v-ons-list-item v-for="(vegetable, $index) in vegetables" :key="vegetable" tappable>
-      <label class="left">
-        <v-ons-radio
-          :input-id="'radio-' + $index"
-          :value="vegetable"
-          v-model=" selectedVegetable"
-        >
-        </v-ons-radio>
-      </label>
-      <label :for="'radio-' + $index" class="center">
-        {{ vegetable }}
-      </label>
-    </v-ons-list-item>
--->
+      <li class="list-item list-item--nodivider">
+        <div class="list-item__left list-item--material__left">
+          <ons-icon icon="fa-calendar-alt" fixed-width="false" size="2x"></ons-icon>
+        </div>
+        <div v-for="(sdate, $index) in startDate" class="list-item__center list-item--nodivider__center">
+          <label class="radio-button radio-button--material">
+            <v-ons-radio
+              :input-id="'radio-' + $index"
+              :value="sdate" 
+              v-model="selectedDate"
+            ></v-ons-radio>
+          </label>
+          <label :for="'radio-' + $index">
+            {{ sdate }}
+          </label>
+        </div>
+      </li>
 
+      <li class="list-item list-item--nodivider">
+        <div class="list-item__left list-item--material__left">
+          <ons-icon icon="fa-clock" fixed-width="false" size="2x"></ons-icon>
+        </div>
+        <div v-for="(stime, $index) in startTime" class="list-item__center list-item--nodivider__center">
+          <label>
+            <v-ons-radio
+              :input-id="'radio-' + $index"
+              :value="stime" 
+              v-model="selectedTime"
+            ></v-ons-radio>
+          </label>
+          <label :for="'radio-' + $index">
+            {{ stime }}
+          </label>
+        </div>
+      </li>
 
-<ul class="list list--material">
-    <li class="list-header list-header--material">
-      Date / Time / Duration {{ selectedDate }}
-    </li>
-    <li class="list-item list-item--nodivider">
-      <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-calendar-alt" fixed-width="false" size="2x"></ons-icon>
-      </div>
-      <div v-for="(date, $index) in startDate" class="list-item__center list-item--nodivider__center">
-        <label class="radio-button radio-button--material radio-button-margin">
-          <v-ons-radio
-            :input-id="'radio-' + $index"
-            :value="date" 
-            v-model="selectedDate"
-          ></v-ons-radio>
-        </label>
-        <label :for="'radio-' + $index">
-          {{ date }}
-        </label>
-      </div>
-    </li>
-    <li class="list-item list-item--nodivider">
-      <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-clock" fixed-width="false" size="2x"></ons-icon>
-      </div>
-        <div class="list-item__center list-item--nodivider__center">
-        <label class="radio-button radio-button--material radio-button-margin">
-          <input type="radio" class="radio-button__input radio-button--material__input" name="stime" checked="checked">
-          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-          9am
-        </label>
-        <label class="radio-button radio-button--material radio-button-margin">
-          <input type="radio" class="radio-button__input radio-button--material__input" name="stime">
-          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-          12pm
-        </label>
-        <label class="radio-button radio-button--material radio-button-margin">
-          <input type="radio" class="radio-button__input radio-button--material__input" name="stime">
-          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-          3pm
-        </label>
-      </div>
-    </li>
-    <li class="list-item list-item--nodivider">
-      <div class="list-item__left list-item--material__left">
-        <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
-      </div>
-        <div class="list-item__center list-item--nodivider__center">
-        <label class="radio-button radio-button--material radio-button-margin">
-          <input type="radio" class="radio-button__input radio-button--material__input" name="duration" checked="checked">
-          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-          6H
-        </label>
-        <label class="radio-button radio-button--material radio-button-margin">
-          <input type="radio" class="radio-button__input radio-button--material__input" name="duration">
-          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-          12H
-        </label>
-        <label class="radio-button radio-button--material radio-button-margin">
-          <input type="radio" class="radio-button__input radio-button--material__input" name="duration">
-          <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-          24H
-        </label>
-      </div>
-    </li>
-</ul>
+      <li class="list-item list-item--nodivider">
+        <div class="list-item__left list-item--material__left">
+          <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
+        </div>
+        <div v-for="(dur, $index) in duration" class="list-item__center list-item--nodivider__center">
+          <label>
+            <v-ons-radio
+              :input-id="'radio-' + $index"
+              :value="dur" 
+              v-model="selectedDuration"
+            ></v-ons-radio>
+          </label>
+          <label :for="'radio-' + $index">
+            {{ dur }}
+          </label>
+        </div>
+      </li>
+
+      <li class="list-item list-item--nodivider">
+        <div class="list-item__left list-item--material__left">
+          <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
+        </div>
+        <div v-for="(dur, idx) in duration" class="list-item__center list-item--nodivider__center">
+          <input v-bind:id="idx" class="radio-inline__input" type="radio" name="duration" v-bind:value="idx"/>
+          <label class="radio-inline__label" v-bind:for="idx">{{ dur }}</label>
+        </div>
+      </li>
+
+  </ul>
 
   <v-ons-button @click="submitRequest">Request</v-ons-button>
 
@@ -558,41 +545,85 @@ const createAccessRequest = {
   template: "#createAccessRequest",
   data () {
     return {
-      startDate: ["today", "tomorrow"],
+      today: "",
+      startDate: [ "Today", "Tomorrow" ],
+      startTime: [ "AM", "PM", "Night" ],
+      duration: [ "3H", "6H", "12H", "24H", "48H" ],
       selectedDate: "",
-      start: {
-        years: [ "2019", "2020" ],
-        months: [ "Jan", "Feb", "Mar" ],
-        dates:  [ 1, 2, 3, 4, 5 ],
-        hour:  [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
-        minute:  [ 0, 15, 30, 45 ],
-        selectedYear: "",
-        selectedMonth: "",
-        selectedDate: "",
-        startTime: 1
-      },
-      end: {
-        years: [ "2019", "2020" ],
-        months: [ "Jan", "Feb", "Mar" ],
-        dates:  [ 1, 2, 3, 4, 5 ],
-        hour:  [ 1, 2, 3, 4, 5 ],
-        minute:  [ 0, 15, 30, 45 ],
-        startTime: 1
-      },
+      selectedTime: "",
+      selectedDuration: "",
       form: {
-        name: '',
-        password: ''
+        start: "2019-01-05T03:16:17.145Z",
+        end: "2019-01-05T03:16:17.145Z",
+        description: "string",
+        attendees: [
+          {
+            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          }
+        ],
+        details: {
+          equipmentIn: true,
+          equipmentOut: true
+        },
+        cabs: [
+          {
+            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          }
+        ],
+        willUploadFile: false
       }
     }
   },
   created() {
+    this.firstDate = new Date();
+    this.secondDate = this.firstDate.setDate(+1);
     //this.getUsers()
+  },
+  computed: {
+    computedStartDateTime: function() {
+      var _startDate = "1970101"
+      var _startTime = 0
+      switch(this.selectedDate){
+        case "Today":
+          var _startDate = moment().format("YYYYMMDD")
+          break;
+        case "Tomorrow":
+          var _startDate = moment().add(1, "days").format("YYYYMMDD")
+          break;
+      }
+      switch(this.selectedTime){
+        case "AM":
+          _startTime = "09"
+          break;
+        case "PM":
+          _startTime = "12"
+          break;
+        case "Night":
+          _startTime = "15"
+          break;
+      }
+      //return _startDate + "T" + _startTime
+      return moment(_startDate + "T" + _startTime).format()
+    },
+    computedToday: function() {
+      return moment().format()
+    },
+    computedTomorrow: function() {
+      return moment().add(1, 'days').format()
+    }
   },
   methods: {
     submitRequest() {
-      console.log(this.start);
-      console.log(this.end);
-      console.log(this.selectedDate);
+      console.log("You selected " + this.selectedDate);
+      console.log("You selected " + this.selectedTime);
+      console.log("computedToday is " + this.computedToday);
+      console.log("computedTomorrow is " + this.computedTomorrow);
+      console.log("computedStartDateTime is " + this.computedStartDateTime);
+      console.log(this.dateSelection);
+      console.log(this.firstDate);
+      console.log(this.secondDate);
+      var now = moment();
+      console.log(now);
     },
     getUsers() {
       fetch(base_url + "nexcenter-jp/v2/users?limit=0")
