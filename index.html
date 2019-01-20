@@ -238,17 +238,9 @@
         <div class="list-item__left list-item--material__left">
           <ons-icon icon="fa-calendar-alt" fixed-width="false" size="2x"></ons-icon>
         </div>
-        <div v-for="(sdate, $index) in startDate" class="list-item__center list-item--nodivider__center">
-          <label class="radio-button radio-button--material">
-            <v-ons-radio
-              :input-id="'radio-' + $index"
-              :value="sdate" 
-              v-model="selectedDate"
-            ></v-ons-radio>
-          </label>
-          <label :for="'radio-' + $index">
-            {{ sdate }}
-          </label>
+        <div v-for="sdate in startDate" class="list-item__center list-item--nodivider__center">
+          <input v-bind:id="sdate" class="radio-inline__input" type="radio" name="sdate" v-model="selectedDate" v-bind:value="sdate"/>
+          <label class="radio-inline__label" v-bind:for="sdate">{{ sdate }}</label>
         </div>
       </li>
 
@@ -256,17 +248,9 @@
         <div class="list-item__left list-item--material__left">
           <ons-icon icon="fa-clock" fixed-width="false" size="2x"></ons-icon>
         </div>
-        <div v-for="(stime, $index) in startTime" class="list-item__center list-item--nodivider__center">
-          <label>
-            <v-ons-radio
-              :input-id="'radio-' + $index"
-              :value="stime" 
-              v-model="selectedTime"
-            ></v-ons-radio>
-          </label>
-          <label :for="'radio-' + $index">
-            {{ stime }}
-          </label>
+        <div v-for="stime in startTime" class="list-item__center list-item--nodivider__center">
+          <input v-bind:id="stime" class="radio-inline__input" type="radio" name="stime" v-model="selectedTime" v-bind:value="stime"/>
+          <label class="radio-inline__label" v-bind:for="stime">{{ stime }}</label>
         </div>
       </li>
 
@@ -274,33 +258,20 @@
         <div class="list-item__left list-item--material__left">
           <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
         </div>
-        <div v-for="(dur, $index) in duration" class="list-item__center list-item--nodivider__center">
-          <label>
-            <v-ons-radio
-              :input-id="'radio-' + $index"
-              :value="dur" 
-              v-model="selectedDuration"
-            ></v-ons-radio>
-          </label>
-          <label :for="'radio-' + $index">
-            {{ dur }}
-          </label>
+        <div v-for="dur in duration" class="list-item__center list-item--nodivider__center">
+          <input v-bind:id="dur" class="radio-inline__input" type="radio" name="duration" v-model="selectedDuration" v-bind:value="dur"/>
+          <label class="radio-inline__label" v-bind:for="dur">{{ dur }}</label>
         </div>
       </li>
 
       <li class="list-item list-item--nodivider">
-        <div class="list-item__left list-item--material__left">
-          <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
-        </div>
-        <div v-for="(dur, idx) in duration" class="list-item__center list-item--nodivider__center">
-          <input v-bind:id="idx" class="radio-inline__input" type="radio" name="duration" v-bind:value="idx"/>
-          <label class="radio-inline__label" v-bind:for="idx">{{ dur }}</label>
+        <div class="list-item__center list-item--nodivider__center">
+          <v-ons-button class="button-center" @click="submitRequest">Request</v-ons-button>
         </div>
       </li>
 
   </ul>
 
-  <v-ons-button @click="submitRequest">Request</v-ons-button>
 
 
   </v-ons-page>
@@ -547,8 +518,8 @@ const createAccessRequest = {
     return {
       today: "",
       startDate: [ "Today", "Tomorrow" ],
-      startTime: [ "AM", "PM", "Night" ],
-      duration: [ "3H", "6H", "12H", "24H", "48H" ],
+      startTime: [ "9am", "12pm", "3pm", "6pm" ],
+      duration: [ "3H", "6H", "12H", "24H"],
       selectedDate: "",
       selectedTime: "",
       selectedDuration: "",
@@ -582,7 +553,7 @@ const createAccessRequest = {
   computed: {
     computedStartDateTime: function() {
       var _startDate = "1970101"
-      var _startTime = 0
+      var _startTime = ""
       switch(this.selectedDate){
         case "Today":
           var _startDate = moment().format("YYYYMMDD")
@@ -592,24 +563,42 @@ const createAccessRequest = {
           break;
       }
       switch(this.selectedTime){
-        case "AM":
+        case "9am":
           _startTime = "09"
           break;
-        case "PM":
+        case "12pm":
           _startTime = "12"
           break;
-        case "Night":
+        case "3pm":
           _startTime = "15"
           break;
+        case "6pm":
+          _startTime = "18"
+          break;
       }
-      //return _startDate + "T" + _startTime
-      return moment(_startDate + "T" + _startTime).format()
+      var sdt = moment(_startDate + "T" + _startTime).format()
+      this.form.start = sdt
+      return sdt
     },
-    computedToday: function() {
-      return moment().format()
-    },
-    computedTomorrow: function() {
-      return moment().add(1, 'days').format()
+    computedEndDateTime: function() {
+      var _duration = 0
+      switch(this.selectedDuration){
+        case "3H":
+          _duration = 3
+          break;
+        case "6H":
+          _duration = 6
+          break;
+        case "12H":
+          _duration = 12
+          break;
+        case "24H":
+          _duration = 24
+          break;
+      }
+      var edt = moment(this.computedStartDateTime).add(_duration, "hours").format()
+      this.form.end = edt
+      return edt
     }
   },
   methods: {
@@ -617,11 +606,14 @@ const createAccessRequest = {
       console.log("You selected " + this.selectedDate);
       console.log("You selected " + this.selectedTime);
       console.log("computedToday is " + this.computedToday);
+      console.log("selectedDuration is " + this.selectedDuration);
       console.log("computedTomorrow is " + this.computedTomorrow);
       console.log("computedStartDateTime is " + this.computedStartDateTime);
+      console.log("computedEndDateTime is " + this.computedEndDateTime);
       console.log(this.dateSelection);
       console.log(this.firstDate);
       console.log(this.secondDate);
+      console.log(this.form);
       var now = moment();
       console.log(now);
     },

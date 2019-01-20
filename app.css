@@ -88,7 +88,7 @@ ons-fab.fab--bottom__right {
 }
 
 .radio-inline__input:checked + .radio-inline__label {
-    background: #0076ff;
+    background: lightgray;
     color: #fff;
     /* text-shadow: 0 0 1px rgba(0,0,0,.7); */
 }
@@ -98,6 +98,15 @@ ons-fab.fab--bottom__right {
     outline-offset: -2px;
     outline-style: auto;
     outline-width: 5px;
+}
+
+/* ons-icon */
+.ons-icon.fa {
+  color: gray;
+}
+
+.button.button-center {
+ margin: auto;
 }
 ~   
 
