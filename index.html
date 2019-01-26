@@ -230,17 +230,21 @@
   </div>
 
   <ul class="list list--material">
-      <li class="list-header list-header--material">
-        Date / Time / Duration: {{ selectedDate }} {{ selectedTime }} {{ selectedDuration }}
+      <!-- <li class="list-header list-header--material"> -->
+      <li class="list-header">
+        Date / Time / Duration:
+        {{ selectedDate }} {{ selectedTime }} {{ selectedDuration }}
       </li>
 
       <li class="list-item list-item--nodivider">
         <div class="list-item__left list-item--material__left">
           <ons-icon icon="fa-calendar-alt" fixed-width="false" size="2x"></ons-icon>
         </div>
-        <div v-for="sdate in startDate" class="list-item__center list-item--nodivider__center">
-          <input v-bind:id="sdate" class="radio-inline__input" type="radio" name="sdate" v-model="selectedDate" v-bind:value="sdate"/>
-          <label class="radio-inline__label" v-bind:for="sdate">{{ sdate }}</label>
+        <div class="list-item__center list-item--nodivider__center">
+          <span v-for="sdate in startDate">
+            <input v-bind:id="sdate" class="radio-inline__input" type="radio" name="sdate" v-model="selectedDate" v-bind:value="sdate"/>
+            <label class="radio-inline__label" v-bind:for="sdate">{{ sdate }}</label>
+          </span>
         </div>
       </li>
 
@@ -248,9 +252,11 @@
         <div class="list-item__left list-item--material__left">
           <ons-icon icon="fa-clock" fixed-width="false" size="2x"></ons-icon>
         </div>
-        <div v-for="stime in startTime" class="list-item__center list-item--nodivider__center">
-          <input v-bind:id="stime" class="radio-inline__input" type="radio" name="stime" v-model="selectedTime" v-bind:value="stime"/>
-          <label class="radio-inline__label" v-bind:for="stime">{{ stime }}</label>
+        <div class="list-item__center list-item--nodivider__center">
+          <span v-for="stime in startTime">
+            <input v-bind:id="stime" class="radio-inline__input" type="radio" name="stime" v-model="selectedTime" v-bind:value="stime"/>
+            <label class="radio-inline__label" v-bind:for="stime">{{ stime }}</label>
+          </span>
         </div>
       </li>
 
@@ -258,9 +264,27 @@
         <div class="list-item__left list-item--material__left">
           <ons-icon icon="fa-user-clock" fixed-width="false" size="2x"></ons-icon>
         </div>
-        <div v-for="dur in duration" class="list-item__center list-item--nodivider__center">
-          <input v-bind:id="dur" class="radio-inline__input" type="radio" name="duration" v-model="selectedDuration" v-bind:value="dur"/>
-          <label class="radio-inline__label" v-bind:for="dur">{{ dur }}</label>
+        <div class="list-item__center list-item--nodivider__center">
+          <span v-for="dur in duration">
+            <input v-bind:id="dur" class="radio-inline__input" type="radio" name="duration" v-model="selectedDuration" v-bind:value="dur"/>
+            <label class="radio-inline__label" v-bind:for="dur">{{ dur }}</label>
+          </span>
+        </div>
+      </li>
+
+      <!-- <li class="list-header list-header--material"> -->
+      <li class="list-header">
+        Cabs: 
+      </li>
+
+      <li class="list-item list-item--nodivider">
+        <div class="list-item__left list-item--material__left">
+          <ons-icon icon="fa-server" fixed-width="false" size="2x"></ons-icon>
+        </div>
+        <div class="list-item__center list-item--nodivider__center">
+        <span class="checkbox-tag" v-for="cab in cabs">
+          <input class="radio-inline__input" type="checkbox" name="cab" v-bind:value="cab" v-bind:value="cab"><span class="radio-inline__label">{{ cab }}</span></input>
+        </span>
         </div>
       </li>
 
@@ -517,9 +541,10 @@ const createAccessRequest = {
   data () {
     return {
       today: "",
-      startDate: [ "Today", "Tomorrow" ],
+      startDate: [ "Today", "Tomorrow", "Next day" ],
       startTime: [ "9am", "12pm", "3pm", "6pm" ],
       duration: [ "3H", "6H", "12H", "24H"],
+      cabs: [ "cab01", "cab02", "cab03", "cab04", "cab05", "cab06", "cab06", "cab07", "cab06", "cab07", "cab08", "cab09", "cab10", "cab11", "cab12", "cab13" ],
       selectedDate: "",
       selectedTime: "",
       selectedDuration: "",
@@ -635,8 +660,8 @@ var vm = new Vue({
   template: '#main',
   data() {
     return {
-      //pageStack: [loginPage]
-      pageStack: [createAccessRequest]
+      pageStack: [loginPage]
+      //pageStack: [createAccessRequest]
     };
   }
 });

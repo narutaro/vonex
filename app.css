@@ -90,7 +90,6 @@ ons-fab.fab--bottom__right {
 .radio-inline__input:checked + .radio-inline__label {
     background: lightgray;
     color: #fff;
-    /* text-shadow: 0 0 1px rgba(0,0,0,.7); */
 }
 
 .radio-inline__input:focus + .radio-inline__label {
@@ -107,6 +106,34 @@ ons-fab.fab--bottom__right {
 
 .button.button-center {
  margin: auto;
+}
+
+/* checkbox */
+.checkbox-hide {
+  display: none;
+}
+
+.checkbox-tag {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: all .2s;
+}
+
+.checkbox__input:checked + .checkbox-tag {
+  background: lightgray;
+  color: #fff;
+}
+
+
+.tag {
+    display: inline-block;
+    padding: 0.3em 0.6em;
+    border-radius: 6px;
+    color: #777;
+    background: #f1f1f1;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
 }
 ~   
 
