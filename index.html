@@ -274,7 +274,7 @@
 
       <!-- <li class="list-header list-header--material"> -->
       <li class="list-header">
-        Cabs: 
+        Cabs: {{ selectedCabList }}
       </li>
 
       <li class="list-item list-item--nodivider">
@@ -283,7 +283,9 @@
         </div>
         <div class="list-item__center list-item--nodivider__center">
         <span class="checkbox-tag" v-for="cab in cabs">
-          <input class="radio-inline__input" type="checkbox" name="cab" v-bind:value="cab" v-bind:value="cab"><span class="radio-inline__label">{{ cab }}</span></input>
+          <input v-bind:id="cab" class="radio-inline__input" type="checkbox" name="cab" v-bind:value="cab" v-bind:value="cab" v-model="selectedCabs">
+          <label class="radio-inline__label" v-bind:for="cab">{{ cab }}</label>
+          <!-- <span class="radio-inline__label">{{ cab }}</span></input> -->
         </span>
         </div>
       </li>
@@ -544,10 +546,11 @@ const createAccessRequest = {
       startDate: [ "Today", "Tomorrow", "Next day" ],
       startTime: [ "9am", "12pm", "3pm", "6pm" ],
       duration: [ "3H", "6H", "12H", "24H"],
-      cabs: [ "cab01", "cab02", "cab03", "cab04", "cab05", "cab06", "cab06", "cab07", "cab06", "cab07", "cab08", "cab09", "cab10", "cab11", "cab12", "cab13" ],
+      cabs: [ "cab01", "cab02", "cab03", "cab04", "cab05", "cab06" ],
       selectedDate: "",
       selectedTime: "",
       selectedDuration: "",
+      selectedCabs: [],
       form: {
         start: "2019-01-05T03:16:17.145Z",
         end: "2019-01-05T03:16:17.145Z",
@@ -576,6 +579,9 @@ const createAccessRequest = {
     //this.getUsers()
   },
   computed: {
+    selectedCabList: function() {
+       return this.selectedCabs.join(", ")
+    },
     computedStartDateTime: function() {
       var _startDate = "1970101"
       var _startTime = ""
@@ -660,8 +666,8 @@ var vm = new Vue({
   template: '#main',
   data() {
     return {
-      pageStack: [loginPage]
-      //pageStack: [createAccessRequest]
+      //pageStack: [loginPage]
+      pageStack: [createAccessRequest]
     };
   }
 });
