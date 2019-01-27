@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/vue-onsenui"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
   <script src="params.js"></script>
   <script src="mylib.js"></script>
   <link rel="stylesheet" href="app.css">
@@ -230,7 +231,6 @@
   </div>
 
   <ul class="list list--material">
-      <!-- <li class="list-header list-header--material"> -->
       <li class="list-header">
         Date / Time / Duration:
         {{ selectedDate }} {{ selectedTime }} {{ selectedDuration }}
@@ -272,7 +272,6 @@
         </div>
       </li>
 
-      <!-- <li class="list-header list-header--material"> -->
       <li class="list-header">
         Cabs: {{ selectedCabList }}
       </li>
@@ -285,7 +284,6 @@
         <span class="checkbox-tag" v-for="cab in cabs">
           <input v-bind:id="cab" class="radio-inline__input" type="checkbox" name="cab" v-bind:value="cab" v-bind:value="cab" v-model="selectedCabs">
           <label class="radio-inline__label" v-bind:for="cab">{{ cab }}</label>
-          <!-- <span class="radio-inline__label">{{ cab }}</span></input> -->
         </span>
         </div>
       </li>
@@ -406,9 +404,14 @@ const accessRequest = {
   data () {
     return {
       // "selectedDcId" is passed passed by datacenters page
-      access_requests: [ { id: "access_request_id" } ],
-      users: [ { id: "user_id" } ],
-      cabs: [ { id: "cab_id" } ]
+      access_requests: [ { id: "accessRequestId" } ],
+      users: [ { id: "userId" } ], // allMyUsers
+      cabs: [ { id: "cabId" } ],    // allMyCabs
+    }
+  },
+  computed: {
+    cabsInThisRequest: function() {
+      return access_requests.cabs
     }
   },
   created() {
@@ -428,28 +431,19 @@ const accessRequest = {
     },
     getAccessRequests() {
       console.log("i received dcid as " + this.selectedDcId);
-      fetch(base_url + "nexcenter-jp/v2/" + this.selectedDcId + "/access_requests")
-        .then(response => response.json())
-        .then(json => {
-          console.log(json);
-          this.access_requests = json;
-        }); 
+      api.get(this.selectedDcId + "/access_requests")
+         .then(response => (this.access_requests = response.data))
+         .catch(error => console.log(error))
     },
     getUsers() {
-      fetch(base_url + "nexcenter-jp/v2/users?limit=0")
-        .then(response => response.json())
-        .then(json => {
-          console.log(json);
-          this.users = json
-        }); 
+      api.get("users?limit=0")
+         .then(response => (this.users = response.data))
+         .catch(error => console.log(error))
     },
     getCabs() {
-      fetch(base_url + "nexcenter-jp/v2/"  + this.selectedDcId + "/cabs")
-        .then(response => response.json())
-        .then(json => {
-          console.log(json);
-          this.cabs = json
-        }); 
+      api.get(this.selectedDcId + "/cabs")
+         .then(response => (this.cabs = response.data))
+         .catch(error => console.log(error))
     },
     getRequesterName(userId) {
       return findNameById(userId, this.users);
@@ -464,8 +458,6 @@ const accessRequest = {
     getCabNames(cabs) {
       var cabNames = "";
       cabs.forEach((cab) => {
-        //console.log("cab.id: " + cab.id);
-        //console.log("this.cabs: " + this.cabs);
         cabNames = cabNames + findNameById(cab.id, this.cabs) + ", "
         console.log(cabNames);
       });
@@ -666,8 +658,8 @@ var vm = new Vue({
   template: '#main',
   data() {
     return {
-      //pageStack: [loginPage]
-      pageStack: [createAccessRequest]
+      pageStack: [loginPage]
+      //pageStack: [createAccessRequest]
     };
   }
 });
